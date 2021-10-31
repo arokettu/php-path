@@ -38,4 +38,55 @@ class RelativePathTest extends TestCase
         $path = RelativePath::windows('..\.\..\i\am\.\skipme\../test\.\path');
         self::assertEquals('..\..\i\am\test\path', $path->toString());
     }
+
+    public function testResolveRelative(): void
+    {
+        $paths = [
+            new RelativePath('/i/am/test/path'),
+            new RelativePath('i/am/test/path'),
+            new RelativePath('../../i/am/test/path'),
+            new RelativePath('../../../../../../../../i/am/test/path'),
+        ];
+        $relativePaths = $paths;
+
+        $matrix = [
+            [
+                '/i/am/test/path',
+                '/i/am/test/path/i/am/test/path',
+                '/i/am/i/am/test/path',
+                null
+            ],
+            [
+                '/i/am/test/path',
+                'i/am/test/path/i/am/test/path',
+                'i/am/i/am/test/path',
+                '../../../../i/am/test/path',
+            ],
+            [
+                '/i/am/test/path',
+                '../../i/am/test/path/i/am/test/path',
+                '../../i/am/i/am/test/path',
+                '../../../../../../i/am/test/path'
+            ],
+            [
+                '/i/am/test/path',
+                '../../../../../../../../i/am/test/path/i/am/test/path',
+                '../../../../../../../../i/am/i/am/test/path',
+                '../../../../../../../../../../../../i/am/test/path',
+            ],
+        ];
+
+        foreach ($paths as $pi => $p) {
+            foreach ($relativePaths as $rpi => $rp) {
+                $matrixResult = $matrix[$pi][$rpi];
+
+                if ($matrixResult === null) {
+                    // TODO: should throw
+                    continue;
+                }
+
+                self::assertEquals($matrixResult, $p->resolveRelative($rp)->toString());
+            }
+        }
+    }
 }
