@@ -42,28 +42,40 @@ class UnixPathTest extends TestCase
     {
         $path = UnixPath::parse('/i/am/test/unix/path');
 
-        $rp1 = new RelativePath('/i/am/test/relative/path');
+        $rp = new RelativePath('/i/am/test/relative/path');
         self::assertEquals(
             '/i/am/test/relative/path',
-            $path->resolveRelative($rp1)->toString()
+            $path->resolveRelative($rp)->toString()
         );
 
-        $rp2 = new RelativePath('i/am/test/relative/path');
+        $rp = new RelativePath('i/am/test/relative/path');
         self::assertEquals(
             '/i/am/test/unix/path/i/am/test/relative/path',
-            $path->resolveRelative($rp2)->toString()
+            $path->resolveRelative($rp)->toString()
         );
 
-        $rp3 = new RelativePath('../../i/am/test/relative/path');
+        $rp = new RelativePath('../../i/am/test/relative/path');
         self::assertEquals(
             '/i/am/test/i/am/test/relative/path',
-            $path->resolveRelative($rp3)->toString()
+            $path->resolveRelative($rp)->toString()
         );
 
-        $rp4 = new RelativePath('../../../../../../../../i/am/test/relative/path');
+        $rp = new RelativePath('../../../../../../../../i/am/test/relative/path');
         self::assertEquals(
             '/i/am/test/relative/path',
-            $path->resolveRelative($rp4)->toString()
+            $path->resolveRelative($rp)->toString()
+        );
+
+        $rp = new RelativePath('..');
+        self::assertEquals(
+            '/i/am/test/unix',
+            $path->resolveRelative($rp)->toString()
+        );
+
+        $rp = new RelativePath('.');
+        self::assertEquals(
+            '/i/am/test/unix/path',
+            $path->resolveRelative($rp)->toString()
         );
     }
 
@@ -71,22 +83,34 @@ class UnixPathTest extends TestCase
     {
         $path = UnixPath::parse('/i/am/test/unix/path');
 
-        $rp1 = new RelativePath('/i/am/test/relative/path');
+        $rp = new RelativePath('/i/am/test/relative/path');
         self::assertEquals(
             '/i/am/test/relative/path',
-            $path->resolveRelative($rp1, true)->toString()
+            $path->resolveRelative($rp, true)->toString()
         );
 
-        $rp2 = new RelativePath('i/am/test/relative/path');
+        $rp = new RelativePath('i/am/test/relative/path');
         self::assertEquals(
             '/i/am/test/unix/path/i/am/test/relative/path',
-            $path->resolveRelative($rp2, true)->toString()
+            $path->resolveRelative($rp, true)->toString()
         );
 
-        $rp3 = new RelativePath('../../i/am/test/relative/path');
+        $rp = new RelativePath('../../i/am/test/relative/path');
         self::assertEquals(
             '/i/am/test/i/am/test/relative/path',
-            $path->resolveRelative($rp3, true)->toString()
+            $path->resolveRelative($rp, true)->toString()
+        );
+
+        $rp = new RelativePath('..');
+        self::assertEquals(
+            '/i/am/test/unix',
+            $path->resolveRelative($rp)->toString()
+        );
+
+        $rp = new RelativePath('.');
+        self::assertEquals(
+            '/i/am/test/unix/path',
+            $path->resolveRelative($rp)->toString()
         );
     }
 

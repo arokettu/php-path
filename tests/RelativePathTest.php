@@ -24,6 +24,12 @@ class RelativePathTest extends TestCase
         // relative path from the parent directory
         $path = RelativePath::unix('.././../i/am/./skipme/../test/./relative/path');
         self::assertEquals('../../i/am/test/relative/path', $path->toString());
+
+        $path = RelativePath::unix('..');
+        self::assertEquals('..', $path->toString());
+
+        $path = RelativePath::unix('.');
+        self::assertEquals('.', $path->toString());
     }
 
     public function testCreateWindows(): void
@@ -48,6 +54,8 @@ class RelativePathTest extends TestCase
             new RelativePath('i/am/test/relative/path'),
             new RelativePath('../../i/am/test/relative/path'),
             new RelativePath('../../../../../../../../i/am/test/relative/path'),
+            new RelativePath('..'),
+            new RelativePath('.'),
         ];
         $relativePaths = $paths;
 
@@ -57,24 +65,48 @@ class RelativePathTest extends TestCase
                 '/i/am/test/relative/path/i/am/test/relative/path',
                 '/i/am/test/i/am/test/relative/path',
                 '/i/am/test/relative/path',
+                '/i/am/test/relative',
+                '/i/am/test/relative/path',
             ],
             [
                 '/i/am/test/relative/path',
                 'i/am/test/relative/path/i/am/test/relative/path',
                 'i/am/test/i/am/test/relative/path',
                 '../../../i/am/test/relative/path',
+                'i/am/test/relative',
+                'i/am/test/relative/path',
             ],
             [
                 '/i/am/test/relative/path',
                 '../../i/am/test/relative/path/i/am/test/relative/path',
                 '../../i/am/test/i/am/test/relative/path',
                 '../../../../../i/am/test/relative/path',
+                '../../i/am/test/relative',
+                '../../i/am/test/relative/path'
             ],
             [
                 '/i/am/test/relative/path',
                 '../../../../../../../../i/am/test/relative/path/i/am/test/relative/path',
                 '../../../../../../../../i/am/test/i/am/test/relative/path',
                 '../../../../../../../../../../../i/am/test/relative/path',
+                '../../../../../../../../i/am/test/relative',
+                '../../../../../../../../i/am/test/relative/path',
+            ],
+            [
+                '/i/am/test/relative/path',
+                '../i/am/test/relative/path',
+                '../../../i/am/test/relative/path',
+                '../../../../../../../../../i/am/test/relative/path',
+                '../..',
+                '..',
+            ],
+            [
+                '/i/am/test/relative/path',
+                'i/am/test/relative/path',
+                '../../i/am/test/relative/path',
+                '../../../../../../../../i/am/test/relative/path',
+                '..',
+                '.',
             ],
         ];
 
@@ -172,7 +204,7 @@ class RelativePathTest extends TestCase
                 throw new \BadMethodCallException('Irrelevant');
             }
 
-            public function resolveRelative($path, bool $strict = false): PathInterface
+            public function resolveRelative(RelativePathInterface $path, bool $strict = false): PathInterface
             {
                 throw new \BadMethodCallException('Irrelevant');
             }
@@ -204,7 +236,7 @@ class RelativePathTest extends TestCase
                 throw new \BadMethodCallException('Irrelevant');
             }
 
-            public function resolveRelative($path, bool $strict = false): PathInterface
+            public function resolveRelative(RelativePathInterface $path, bool $strict = false): PathInterface
             {
                 throw new \BadMethodCallException('Irrelevant');
             }

@@ -64,7 +64,7 @@ final class RelativePath extends AbstractPath implements RelativePathInterface
         $directorySeparator = $this->windows ? '\\' : '/';
         $components = $this->components;
 
-        if ($components[0] === '.') {
+        if ($components[0] === '.' && $components->count() > 1) {
             $components = clone $components;
             $components->shift();
         }
