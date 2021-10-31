@@ -25,6 +25,11 @@ final class RelativePath extends AbstractPath implements RelativePathInterface
         return new self($path, true);
     }
 
+    public static function currentOS(string $path): self
+    {
+        return new self($path, DIRECTORY_SEPARATOR === '\\');
+    }
+
     protected function parsePath(string $path, bool $strict): void
     {
         $components = explode('/', $path);
@@ -47,11 +52,6 @@ final class RelativePath extends AbstractPath implements RelativePathInterface
 
         $this->prefix = '';
         $this->components = $parsedComponents;
-    }
-
-    protected function buildRelative(string $path): RelativePath
-    {
-        return new RelativePath($path, $this->windows);
     }
 
     public function isRoot(): bool

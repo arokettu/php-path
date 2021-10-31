@@ -22,27 +22,9 @@ abstract class AbstractPath implements PathInterface
     }
 
     /**
-     * @param RelativePathInterface|string $path
      * @return static
      */
-    public function resolveRelative($path, bool $strict = false): self
-    {
-        if (\is_string($path)) {
-            $path = $this->buildRelative($path);
-        }
-
-        return $this->doResolveRelative($path, $strict);
-    }
-
-    protected function buildRelative(string $path): RelativePath
-    {
-        return new RelativePath($path);
-    }
-
-    /**
-     * @return static
-     */
-    protected function doResolveRelative(RelativePathInterface $path, bool $strict): self
+    public function resolveRelative(RelativePathInterface $path, bool $strict = false): self
     {
         if ($path instanceof RelativePath) {
             // optimize

@@ -11,8 +11,7 @@ interface PathInterface extends \Stringable
     public function toString(): string;
 
     /**
-     * @param RelativePathInterface|string $path
      * @return static
      */
-    public function resolveRelative($path, bool $strict = false): self;
+    public function resolveRelative(RelativePathInterface $path, bool $strict = false): self;
 }
