@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Arokettu\Path;
 
-final class RelativePath extends AbstractPath
+final class RelativePath extends AbstractPath implements RelativePathInterface
 {
     private bool $windows;
 
@@ -25,7 +25,7 @@ final class RelativePath extends AbstractPath
         return new self($path, true);
     }
 
-    protected function parsePath(string $path): \SplDoublyLinkedList
+    protected function parsePath(string $path): void
     {
         $components = explode('/', $path);
 
@@ -45,7 +45,8 @@ final class RelativePath extends AbstractPath
             $parsedComponents->unshift('.');
         }
 
-        return $parsedComponents;
+        $this->prefix = '';
+        $this->components = $parsedComponents;
     }
 
     protected function buildRelative(string $path): RelativePath

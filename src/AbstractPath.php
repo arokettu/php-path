@@ -4,21 +4,26 @@ declare(strict_types=1);
 
 namespace Arokettu\Path;
 
+use Arokettu\Path\Helpers\DataTypeHelper;
+
+/**
+ * @internal
+ */
 abstract class AbstractPath implements PathInterface
 {
     protected string $prefix;
     protected \SplDoublyLinkedList $components;
 
-    abstract protected function parsePath(string $path): \SplDoublyLinkedList;
+    abstract protected function parsePath(string $path): void;
 
     public function __construct(string $path)
     {
-        $this->components = $this->parsePath($path);
+        $this->parsePath($path);
     }
 
     /**
-     * @param RelativePath|string $path
-     * @static
+     * @param RelativePathInterface|string $path
+     * @return static
      */
     public function resolveRelative($path, bool $strict = false): self
     {
@@ -37,20 +42,31 @@ abstract class AbstractPath implements PathInterface
     /**
      * @return static
      */
-    protected function doResolveRelative(RelativePath $path, bool $strict): self
+    protected function doResolveRelative(RelativePathInterface $path, bool $strict): self
     {
-        $relativeComponents = $path->components;
+        if ($path instanceof RelativePath) {
+            // optimize
+            $relativeComponents = $path->components;
+        } else {
+            // allow external implementations
+            $relativeComponents = $path->getComponents();
+            if (!array_is_list($relativeComponents)) {
+                throw new \InvalidArgumentException(
+                    'Poor RelativePathInterface implementation: getComponents() must return a list'
+                );
+            }
+        }
 
         if ($path->isRoot()) {
             $newPath = clone $this;
-            $newPath->components = clone $relativeComponents;
+            $newPath->components = DataTypeHelper::iterableToNewListInstance($relativeComponents);
 
             return $newPath;
         }
 
         $components = clone $this->components;
 
-        $numComponents = $relativeComponents->count();
+        $numComponents = \count($relativeComponents);
         for ($i = 0; $i < $numComponents; $i++) {
             if ($relativeComponents[$i] === '.') {
                 continue;
@@ -118,6 +134,11 @@ abstract class AbstractPath implements PathInterface
         }
 
         return $components;
+    }
+
+    public function toString(): string
+    {
+        return $this->prefix . \iter\join('/', $this->components);
     }
 
     public function __toString(): string

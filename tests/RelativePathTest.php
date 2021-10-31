@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Arokettu\Path\Tests;
 
+use Arokettu\Path\PathInterface;
 use Arokettu\Path\RelativePath;
+use Arokettu\Path\RelativePathInterface;
 use PHPUnit\Framework\TestCase;
 
 class RelativePathTest extends TestCase
@@ -144,5 +146,65 @@ class RelativePathTest extends TestCase
         $rp = new RelativePath('../../../../../../../../i/am/test/path');
 
         $p->resolveRelative($rp, true);
+    }
+
+    public function testExternalRelativeImplementations(): void
+    {
+        $p = new RelativePath('i/am/test/path');
+
+        $rp1 = new class implements RelativePathInterface {
+            public function __toString(): string {
+                return '';
+            }
+
+            public function getComponents(): array
+            {
+                return explode('/', '../../i/am/test/path');
+            }
+
+            public function toString(): string
+            {
+                throw new \BadMethodCallException('Irrelevant');
+            }
+
+            public function resolveRelative($path, bool $strict = false): PathInterface
+            {
+                throw new \BadMethodCallException('Irrelevant');
+            }
+
+            public function isRoot(): bool
+            {
+                return false;
+            }
+        };
+
+        $rp2 = new class implements RelativePathInterface {
+            public function __toString(): string {
+                return '';
+            }
+
+            public function getComponents(): array
+            {
+                return explode('/', 'i/am/test/path');
+            }
+
+            public function toString(): string
+            {
+                throw new \BadMethodCallException('Irrelevant');
+            }
+
+            public function resolveRelative($path, bool $strict = false): PathInterface
+            {
+                throw new \BadMethodCallException('Irrelevant');
+            }
+
+            public function isRoot(): bool
+            {
+                return true;
+            }
+        };
+
+        self::assertEquals('i/am/i/am/test/path', $p->resolveRelative($rp1)->toString());
+        self::assertEquals('/i/am/test/path', $p->resolveRelative($rp2)->toString());
     }
 }
