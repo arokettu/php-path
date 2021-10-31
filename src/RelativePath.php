@@ -25,7 +25,7 @@ final class RelativePath extends AbstractPath implements RelativePathInterface
         return new self($path, true);
     }
 
-    protected function parsePath(string $path): void
+    protected function parsePath(string $path, bool $strict): void
     {
         $components = explode('/', $path);
 

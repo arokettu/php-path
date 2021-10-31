@@ -6,6 +6,7 @@ namespace Arokettu\Path;
 
 interface PathInterface extends \Stringable
 {
+    public function getPrefix(): string;
     public function getComponents(): array;
     public function toString(): string;
 

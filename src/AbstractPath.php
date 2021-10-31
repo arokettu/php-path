@@ -14,11 +14,11 @@ abstract class AbstractPath implements PathInterface
     protected string $prefix;
     protected \SplDoublyLinkedList $components;
 
-    abstract protected function parsePath(string $path): void;
+    abstract protected function parsePath(string $path, bool $strict): void;
 
-    public function __construct(string $path)
+    public function __construct(string $path, bool $strict = false)
     {
-        $this->parsePath($path);
+        $this->parsePath($path, $strict);
     }
 
     /**
@@ -101,12 +101,16 @@ abstract class AbstractPath implements PathInterface
                 continue;
             }
 
-            if ($component === '..' && $prevComponent !== '..' && $prevComponent !== null) {
+            if (
+                $component === '..' &&
+                $prevComponent !== '..' && $prevComponent !== null && // leading ..'s
+                $componentsList->count() > 0 // beginning of the list
+            ) {
                 $componentsList->pop();
-            } else {
-                $componentsList->push($component);
+                continue;
             }
 
+            $componentsList->push($component);
             $prevComponent = $component;
         }
 
@@ -144,6 +148,11 @@ abstract class AbstractPath implements PathInterface
     public function __toString(): string
     {
         return $this->toString();
+    }
+
+    public function getPrefix(): string
+    {
+        return $this->prefix;
     }
 
     public function getComponents(): array
