@@ -84,4 +84,65 @@ class RelativePathTest extends TestCase
             }
         }
     }
+
+    public function testResolveRelativeStrict(): void
+    {
+        $paths = [
+            new RelativePath('/i/am/test/path'),
+            new RelativePath('i/am/test/path'),
+            new RelativePath('../../i/am/test/path'),
+            new RelativePath('../../../../../../../../i/am/test/path'),
+        ];
+        $relativePaths = $paths;
+
+        $matrix = [
+            [
+                '/i/am/test/path',
+                '/i/am/test/path/i/am/test/path',
+                '/i/am/i/am/test/path',
+                null,
+            ],
+            [
+                '/i/am/test/path',
+                'i/am/test/path/i/am/test/path',
+                'i/am/i/am/test/path',
+                '../../../../i/am/test/path',
+            ],
+            [
+                '/i/am/test/path',
+                '../../i/am/test/path/i/am/test/path',
+                '../../i/am/i/am/test/path',
+                '../../../../../../i/am/test/path',
+            ],
+            [
+                '/i/am/test/path',
+                '../../../../../../../../i/am/test/path/i/am/test/path',
+                '../../../../../../../../i/am/i/am/test/path',
+                '../../../../../../../../../../../../i/am/test/path',
+            ],
+        ];
+
+        foreach ($paths as $pi => $p) {
+            foreach ($relativePaths as $rpi => $rp) {
+                $matrixResult = $matrix[$pi][$rpi];
+
+                if ($matrixResult === null) {
+                    continue;
+                }
+
+                self::assertEquals($matrixResult, $p->resolveRelative($rp, true)->toString());
+            }
+        }
+    }
+
+    public function testResolveRelativeStrictAssertion(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Relative path went beyond root');
+
+        $p = new RelativePath('/i/am/test/path');
+        $rp = new RelativePath('../../../../../../../../i/am/test/path');
+
+        $p->resolveRelative($rp, true);
+    }
 }
