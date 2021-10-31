@@ -1,0 +1,40 @@
+{
+    "name": "arokettu/path",
+    "description": "",
+    "keywords": [],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anton Smirnov",
+            "email": "sandfox@sandfox.me"
+        }
+    ],
+    "support": {
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Arokettu\\Path\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Arokettu\\Path\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "php": "^7.4 | ^8.0",
+        "nikic/iter": "^2.0",
+        "symfony/polyfill-php80": "^1.17"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">= 7 < 10",
+        "psy/psysh": "*",
+        "sandfox.dev/code-standard": "^10@dev",
+        "squizlabs/php_codesniffer": "*",
+        "vimeo/psalm": "^4.11"
+    }
+}

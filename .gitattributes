@@ -1,0 +1,4 @@
+/tests  export-ignore
+/.git*  export-ignore
+/*.yml  export-ignore
+/*.xml  export-ignore
