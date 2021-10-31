@@ -54,7 +54,7 @@ class RelativePathTest extends TestCase
                 '/i/am/test/path',
                 '/i/am/test/path/i/am/test/path',
                 '/i/am/i/am/test/path',
-                null
+                '/i/am/test/path',
             ],
             [
                 '/i/am/test/path',
@@ -66,7 +66,7 @@ class RelativePathTest extends TestCase
                 '/i/am/test/path',
                 '../../i/am/test/path/i/am/test/path',
                 '../../i/am/i/am/test/path',
-                '../../../../../../i/am/test/path'
+                '../../../../../../i/am/test/path',
             ],
             [
                 '/i/am/test/path',
@@ -79,11 +79,6 @@ class RelativePathTest extends TestCase
         foreach ($paths as $pi => $p) {
             foreach ($relativePaths as $rpi => $rp) {
                 $matrixResult = $matrix[$pi][$rpi];
-
-                if ($matrixResult === null) {
-                    // TODO: should throw
-                    continue;
-                }
 
                 self::assertEquals($matrixResult, $p->resolveRelative($rp)->toString());
             }

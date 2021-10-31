@@ -76,4 +76,24 @@ final class RelativePath extends AbstractPath
 
         return $path;
     }
+
+    protected function normalizeHead(\SplDoublyLinkedList $components, bool $strict): \SplDoublyLinkedList
+    {
+        if ($this->isRoot()) {
+            return parent::normalizeHead($components, $strict);
+        }
+
+        while (!$components->isEmpty()) {
+            if ($components[0] === '.') {
+                $components->shift();
+                continue;
+            }
+
+            break;
+        }
+
+        $components->unshift('.');
+
+        return $components;
+    }
 }

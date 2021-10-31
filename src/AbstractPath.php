@@ -37,7 +37,7 @@ abstract class AbstractPath implements PathInterface
     /**
      * @return static
      */
-    private function doResolveRelative(RelativePath $path, bool $strict): self
+    protected function doResolveRelative(RelativePath $path, bool $strict): self
     {
         $relativeComponents = $path->components;
 
@@ -56,7 +56,12 @@ abstract class AbstractPath implements PathInterface
                 continue;
             }
 
-            if ($relativeComponents[$i] === '..') {
+            if (
+                $relativeComponents[$i] === '..' &&
+                !$components->isEmpty() &&
+                $components->top() !== '..' &&
+                $components->top() !== '.'
+            ) {
                 $components->pop();
                 continue;
             }
