@@ -25,6 +25,9 @@ final class RelativePath extends AbstractPath implements RelativePathInterface
         return new self($path, true);
     }
 
+    /**
+     * @codeCoverageIgnore OS specific
+     */
     public static function currentOS(string $path): self
     {
         return new self($path, DIRECTORY_SEPARATOR === '\\');

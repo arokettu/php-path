@@ -16,6 +16,9 @@ abstract class FilesystemPath extends AbstractAbsolutePath
         throw new \LogicException('The class is not meant to be extended externally');
     }
 
+    /**
+     * @codeCoverageIgnore OS specific
+     */
     public static function parse(string $path, bool $strict = false): self
     {
         if (DIRECTORY_SEPARATOR === '\\') {
