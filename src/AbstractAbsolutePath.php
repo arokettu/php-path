@@ -8,6 +8,16 @@ use Arokettu\Path\Helpers\DataTypeHelper;
 
 abstract class AbstractAbsolutePath extends AbstractPath implements AbsolutePathInterface
 {
+    public function isAbsolute(): bool
+    {
+        return true;
+    }
+
+    public function isRelative(): bool
+    {
+        return false;
+    }
+
     /**
      * @param static $targetPath
      */

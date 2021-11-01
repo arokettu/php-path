@@ -33,6 +33,16 @@ final class RelativePath extends AbstractPath implements RelativePathInterface
         return new self($path, DIRECTORY_SEPARATOR === '\\');
     }
 
+    public function isAbsolute(): bool
+    {
+        return false;
+    }
+
+    public function isRelative(): bool
+    {
+        return true;
+    }
+
     protected function parsePath(string $path, bool $strict): void
     {
         $components = explode('/', $path);
