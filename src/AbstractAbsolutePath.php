@@ -6,9 +6,6 @@ namespace Arokettu\Path;
 
 use Arokettu\Path\Helpers\DataTypeHelper;
 
-/**
- * @internal
- */
 abstract class AbstractAbsolutePath extends AbstractPath implements AbsolutePathInterface
 {
     /**

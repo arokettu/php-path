@@ -6,9 +6,6 @@ namespace Arokettu\Path;
 
 use Arokettu\Path\Helpers\DataTypeHelper;
 
-/**
- * @internal
- */
 abstract class AbstractPath implements PathInterface
 {
     protected string $prefix;
