@@ -6,16 +6,6 @@ namespace Arokettu\Path;
 
 abstract class FilesystemPath extends AbstractAbsolutePath
 {
-    public function __construct(string $path, bool $strict = false)
-    {
-        if ($this instanceof WindowsPath || $this instanceof UnixPath) {
-            parent::__construct($path, $strict);
-            return;
-        }
-
-        throw new \LogicException('The class is not meant to be extended externally');
-    }
-
     /**
      * @codeCoverageIgnore OS specific
      */
