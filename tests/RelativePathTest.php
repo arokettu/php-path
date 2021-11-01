@@ -184,68 +184,15 @@ class RelativePathTest extends TestCase
     {
         $p = new RelativePath('i/am/test/relative/path');
 
-        $rp1 = new class implements RelativePathInterface {
-            public function __toString(): string {
-                return '';
-            }
+        $rp1 = new Classes\CustomRelativePathImplementation(
+            explode('/', '../../i/am/test/relative/path'),
+            false,
+        );
 
-            public function getPrefix(): string
-            {
-                return '';
-            }
-
-            public function getComponents(): array
-            {
-                return explode('/', '../../i/am/test/relative/path');
-            }
-
-            public function toString(): string
-            {
-                throw new \BadMethodCallException('Irrelevant');
-            }
-
-            public function resolveRelative(RelativePathInterface $path, bool $strict = false): PathInterface
-            {
-                throw new \BadMethodCallException('Irrelevant');
-            }
-
-            public function isRoot(): bool
-            {
-                return false;
-            }
-        };
-
-        $rp2 = new class implements RelativePathInterface {
-            public function __toString(): string
-            {
-                return '';
-            }
-
-            public function getPrefix(): string
-            {
-                return '';
-            }
-
-            public function getComponents(): array
-            {
-                return explode('/', 'i/am/test/relative/path');
-            }
-
-            public function toString(): string
-            {
-                throw new \BadMethodCallException('Irrelevant');
-            }
-
-            public function resolveRelative(RelativePathInterface $path, bool $strict = false): PathInterface
-            {
-                throw new \BadMethodCallException('Irrelevant');
-            }
-
-            public function isRoot(): bool
-            {
-                return true;
-            }
-        };
+        $rp2 = new Classes\CustomRelativePathImplementation(
+            explode('/', 'i/am/test/relative/path'),
+            true,
+        );
 
         self::assertEquals('i/am/test/i/am/test/relative/path', $p->resolveRelative($rp1)->toString());
         self::assertEquals('/i/am/test/relative/path', $p->resolveRelative($rp2)->toString());
