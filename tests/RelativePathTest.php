@@ -30,6 +30,24 @@ class RelativePathTest extends TestCase
 
         $path = RelativePath::unix('.');
         self::assertEquals('.', $path->toString());
+
+        // test empty
+        $path = RelativePath::unix('');
+        self::assertEquals('.', $path->toString());
+
+        // preserve trailing slash
+        $path = RelativePath::unix('./');
+        self::assertEquals('./', $path->toString());
+
+        $path = RelativePath::unix('../');
+        self::assertEquals('../', $path->toString());
+
+        $path = RelativePath::unix('path/');
+        self::assertEquals('path/', $path->toString());
+
+        // root path
+        $path = RelativePath::unix('/');
+        self::assertEquals('/', $path->toString());
     }
 
     public function testCreateWindows(): void
@@ -57,7 +75,6 @@ class RelativePathTest extends TestCase
             new RelativePath('..'),
             new RelativePath('.'),
         ];
-        $relativePaths = $paths;
 
         $matrix = [
             [
@@ -111,7 +128,7 @@ class RelativePathTest extends TestCase
         ];
 
         foreach ($paths as $pi => $p) {
-            foreach ($relativePaths as $rpi => $rp) {
+            foreach ($paths as $rpi => $rp) {
                 $matrixResult = $matrix[$pi][$rpi];
 
                 self::assertEquals($matrixResult, $p->resolveRelative($rp)->toString());
@@ -127,7 +144,6 @@ class RelativePathTest extends TestCase
             new RelativePath('../../i/am/test/relative/path'),
             new RelativePath('../../../../../../../../i/am/test/relative/path'),
         ];
-        $relativePaths = $paths;
 
         $matrix = [
             [
@@ -157,7 +173,7 @@ class RelativePathTest extends TestCase
         ];
 
         foreach ($paths as $pi => $p) {
-            foreach ($relativePaths as $rpi => $rp) {
+            foreach ($paths as $rpi => $rp) {
                 $matrixResult = $matrix[$pi][$rpi];
 
                 if ($matrixResult === null) {
@@ -165,6 +181,51 @@ class RelativePathTest extends TestCase
                 }
 
                 self::assertEquals($matrixResult, $p->resolveRelative($rp, true)->toString());
+            }
+        }
+    }
+
+    public function testResolveRelativeTrailingSlash(): void
+    {
+        $paths = [
+            new RelativePath('../path/path1'),
+            new RelativePath('../path/path1/'),
+            new RelativePath('../path/path2'),
+            new RelativePath('../path/path2/'),
+        ];
+
+        $matrix = [
+            [
+                '../path/path/path1',
+                '../path/path/path1/',
+                '../path/path/path2',
+                '../path/path/path2/',
+            ],
+            [
+                '../path/path/path1',
+                '../path/path/path1/',
+                '../path/path/path2',
+                '../path/path/path2/',
+            ],
+            [
+                '../path/path/path1',
+                '../path/path/path1/',
+                '../path/path/path2',
+                '../path/path/path2/',
+            ],
+            [
+                '../path/path/path1',
+                '../path/path/path1/',
+                '../path/path/path2',
+                '../path/path/path2/',
+            ],
+        ];
+
+        foreach ($paths as $pi => $p) {
+            foreach ($paths as $rpi => $rp) {
+                $matrixResult = $matrix[$pi][$rpi];
+
+                self::assertEquals($matrixResult, $p->resolveRelative($rp)->toString());
             }
         }
     }

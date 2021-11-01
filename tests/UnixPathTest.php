@@ -13,14 +13,18 @@ class UnixPathTest extends TestCase
 {
     public function testCreate(): void
     {
-        $path1 = UnixPath::parse('/i/./am/./skipme/./.././test/./unix/path');
-        self::assertEquals('/i/am/test/unix/path', $path1->toString());
+        $path = UnixPath::parse('/i/./am/./skipme/./.././test/./unix/path');
+        self::assertEquals('/i/am/test/unix/path', $path->toString());
 
-        $path2 = UnixPath::parse('/invalid/level/of/nesting/../../../../../../../../../../i/am/test/unix/path');
-        self::assertEquals('/i/am/test/unix/path', $path2->toString());
+        $path = UnixPath::parse('/invalid/level/of/nesting/../../../../../../../../../../i/am/test/unix/path');
+        self::assertEquals('/i/am/test/unix/path', $path->toString());
 
-        $path3 = UnixPath::parse('/i/./am/./skipme/./.././test/./unix/path', true);
-        self::assertEquals('/i/am/test/unix/path', $path3->toString());
+        $path = UnixPath::parse('/i/./am/./skipme/./.././test/./unix/path', true);
+        self::assertEquals('/i/am/test/unix/path', $path->toString());
+
+        // root path
+        $path = UnixPath::parse('/', true);
+        self::assertEquals('/', $path->toString());
     }
 
     public function testCreateStrict(): void

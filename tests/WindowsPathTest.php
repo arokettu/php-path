@@ -52,6 +52,11 @@ class WindowsPathTest extends TestCase
         $path = WindowsPath::parse('\\\\.MYPC\\c$\\windows\\win.ini');
         self::assertEquals('\\\\.MYPC\\c$\\windows\\win.ini', $path->toString());
         self::assertEquals('\\\\.MYPC\\', $path->getPrefix());
+
+        // root path
+        $path = WindowsPath::parse('X:\\');
+        self::assertEquals('X:\\', $path->toString());
+        self::assertEquals('X:\\', $path->getPrefix());
     }
 
     public function testCreateInvalidNotAWinPath(): void
@@ -69,6 +74,14 @@ class WindowsPathTest extends TestCase
 
         // technically valid but usually useless
         WindowsPath::parse('c:windows\win.ini');
+    }
+
+    public function testCreateInvalidRoot(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unrecognized Windows path');
+
+        WindowsPath::parse('X:');
     }
 
     public function testCreateInvalidUNCWithSlash(): void

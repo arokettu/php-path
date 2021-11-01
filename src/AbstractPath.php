@@ -45,6 +45,11 @@ abstract class AbstractPath implements PathInterface
 
         $components = clone $this->components;
 
+        // remove trailing slash
+        if ($components->top() === '') {
+            $components->pop();
+        }
+
         $numComponents = \count($relativeComponents);
         for ($i = 0; $i < $numComponents; $i++) {
             if ($relativeComponents[$i] === '.') {
@@ -72,10 +77,22 @@ abstract class AbstractPath implements PathInterface
 
     protected function normalize(array $components): \SplDoublyLinkedList
     {
+        $numComponents = \count($components);
+
+        // skip empties in the beginning
+        for ($i = 0; $i < $numComponents; $i++) {
+            if ($components[$i] !== '') {
+                break;
+            }
+        }
+
         $componentsList = new \SplDoublyLinkedList();
 
+        $component = null; // also stores last component ignoring $prevComponent logic
         $prevComponent = null;
-        foreach ($components as $component) {
+        for ($j = $i; $j < $numComponents; $j++) {
+            $component = $components[$j];
+
             if ($component === '.' || $component === '') {
                 continue;
             }
@@ -91,6 +108,11 @@ abstract class AbstractPath implements PathInterface
 
             $componentsList->push($component);
             $prevComponent = $component;
+        }
+
+        // trailing slash logic
+        if ($component === '') {
+            $componentsList->push('');
         }
 
         return $componentsList;

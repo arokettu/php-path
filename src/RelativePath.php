@@ -58,7 +58,7 @@ final class RelativePath extends AbstractPath implements RelativePathInterface
         $parsedComponents = $this->normalize($components);
 
         // absolute-ish relative path
-        $isRoot = $path[0] === '/' || $this->windows && $path[0] === '\\';
+        $isRoot = \strlen($path) > 0 && ($path[0] === '/' || $this->windows && $path[0] === '\\');
         if (!$isRoot) {
             $parsedComponents->unshift('.');
         }
@@ -69,7 +69,7 @@ final class RelativePath extends AbstractPath implements RelativePathInterface
 
     public function isRoot(): bool
     {
-        return $this->components[0] !== '.' && $this->components[0] !== '..';
+        return $this->components->count() === 0 || $this->components[0] !== '.' && $this->components[0] !== '..';
     }
 
     public function toString(): string
@@ -77,7 +77,7 @@ final class RelativePath extends AbstractPath implements RelativePathInterface
         $directorySeparator = $this->windows ? '\\' : '/';
         $components = $this->components;
 
-        if ($components[0] === '.' && $components->count() > 1) {
+        if ($components->count() > 1 && $components[0] === '.' && $components[1] !== '') {
             $components = clone $components;
             $components->shift();
         }

@@ -55,7 +55,7 @@ final class WindowsPath extends FilesystemPath
 
         $parsedComponents = $this->normalize($components);
 
-        if ($parsedComponents[0] === '..') {
+        if ($parsedComponents->count() > 0 && $parsedComponents[0] === '..') {
             if ($strict) {
                 throw new \InvalidArgumentException('Path went beyond root');
             }
