@@ -9,5 +9,5 @@ interface AbsolutePathInterface extends PathInterface
     /**
      * @param static $targetPath
      */
-    public function makeRelative(self $targetPath): RelativePathInterface;
+    public function makeRelative(self $targetPath, ?\Closure $equals = null): RelativePathInterface;
 }

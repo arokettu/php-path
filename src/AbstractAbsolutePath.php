@@ -14,7 +14,7 @@ abstract class AbstractAbsolutePath extends AbstractPath implements AbsolutePath
     /**
      * @param static $targetPath
      */
-    public function makeRelative(AbsolutePathInterface $targetPath): RelativePathInterface
+    public function makeRelative(AbsolutePathInterface $targetPath, ?\Closure $equals = null): RelativePathInterface
     {
         if (\get_class($this) !== \get_class($targetPath) || $this->prefix !== $targetPath->prefix) {
             throw new \InvalidArgumentException(
@@ -28,9 +28,10 @@ abstract class AbstractAbsolutePath extends AbstractPath implements AbsolutePath
         }
 
         $length = min($this->components->count(), $targetPath->components->count());
+        $equals ??= fn($a, $b) => $a === $b;
 
         for ($i = 0; $i < $length; $i++) {
-            if ($this->components[$i] !== $targetPath->components[$i]) {
+            if (!$equals($this->components[$i], $targetPath->components[$i])) {
                 break;
             }
         }
