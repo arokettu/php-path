@@ -7,8 +7,7 @@ namespace Arokettu\Path;
 interface AbsolutePathInterface extends PathInterface
 {
     /**
-     * @param static|string $path
-     * @return static
+     * @param static $targetPath
      */
-    public function makeRelative($path, bool $strict = false): self;
+    public function makeRelative(self $targetPath): RelativePathInterface;
 }
