@@ -169,7 +169,105 @@ class UnixPathTest extends TestCase
             foreach ($paths as $tpi => $tp) {
                 $result = $matrix[$bpi][$tpi];
 
-                self::assertEquals($result, $bp->makeRelative($tp));
+                self::assertEquals($result, $bp->makeRelative($tp)->toString());
+            }
+        }
+    }
+
+    public function testMakeRelativeTrailingSlash(): void
+    {
+        $paths = [
+            new UnixPath('/path/path1'),
+            new UnixPath('/path/path1/'),
+            new UnixPath('/path/path2'),
+            new UnixPath('/path/path2/'),
+        ];
+
+        $matrix = [
+            [
+                '.',
+                './',
+                '../path2',
+                '../path2/',
+            ],
+            [
+                '.',
+                './',
+                '../path2',
+                '../path2/',
+            ],
+            [
+                '../path1',
+                '../path1/',
+                '.',
+                './',
+            ],
+            [
+                '../path1',
+                '../path1/',
+                '.',
+                './',
+            ],
+        ];
+
+        foreach ($paths as $bpi => $bp) {
+            foreach ($paths as $tpi => $tp) {
+                $result = $matrix[$bpi][$tpi];
+
+                self::assertEquals(
+                    $result,
+                    $bp->makeRelative($tp)->toString(),
+                    sprintf('Unexpected relative of base %s and target %s', \strval($bp), \strval($tp)),
+                );
+            }
+        }
+    }
+
+    public function testMakeRelativeRoot(): void
+    {
+        $paths = [
+            new UnixPath('/'),
+            new UnixPath('/'), // same path, different instance
+            new UnixPath('/path'),
+            new UnixPath('/path/'),
+        ];
+
+        $matrix = [
+            [
+                '.',
+                '.',
+                'path',
+                'path/',
+            ],
+            [
+                '.',
+                '.',
+                'path',
+                'path/',
+            ],
+            [
+                '..',
+                '..',
+                '.',
+                './',
+            ],
+            [
+                '..',
+                '..',
+                '.',
+                './',
+            ],
+        ];
+
+        foreach ($paths as $bpi => $bp) {
+            foreach ($paths as $tpi => $tp) {
+                $result = $matrix[$bpi][$tpi];
+
+                self::assertEquals(
+                    $result,
+                    $bp->makeRelative($tp)->toString(),
+                    sprintf('Unexpected relative of base %s and target %s', \strval($bp), \strval($tp)),
+                );
             }
         }
     }

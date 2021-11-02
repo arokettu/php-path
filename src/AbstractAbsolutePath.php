@@ -31,34 +31,52 @@ abstract class AbstractAbsolutePath extends AbstractPath implements AbsolutePath
 
         // optimize if the same instance
         if ($this === $targetPath || $this->components === $targetPath->components) {
-            return $this->buildRelative(DataTypeHelper::iterableToNewListInstance(['.']));
+            return $this->buildRelative(DataTypeHelper::iterableToNewListInstance(
+                $this->components->count() > 0 && $this->components->top() === '' ? ['.', ''] : ['.']
+            ));
         }
 
-        $length = min($this->components->count(), $targetPath->components->count());
+        // strip trailing slash
+        $baseComponents = $this->components;
+        if ($baseComponents->count() > 0 && $baseComponents->top() === '') {
+            $baseComponents = clone $baseComponents; // clone when necessary
+            $baseComponents->pop();
+        }
+
+        // strip trailing slash
+        $targetComponents = clone $targetPath->components; // always clone
+        if ($targetComponents->count() > 0 && $targetComponents->top() === '') {
+            $targetComponents->pop();
+        }
+
+        $length = min($baseComponents->count(), $targetComponents->count());
         $equals ??= fn($a, $b) => $a === $b;
 
         for ($i = 0; $i < $length; $i++) {
-            if (!$equals($this->components[$i], $targetPath->components[$i])) {
+            if (!$equals($baseComponents[$i], $targetComponents[$i])) {
                 break;
             }
         }
 
-        $relativeComponents = clone $targetPath->components;
-
         // delete $i components from the beginning (common prefix)
         for ($j = 0; $j < $i; $j++) {
-            $relativeComponents->shift();
+            $targetComponents->shift();
         }
 
         // add (baseLen - $i) .. elements
-        $numBaseDiff = $this->components->count() - $i;
+        $numBaseDiff = $baseComponents->count() - $i;
         for ($j = 0; $j < $numBaseDiff; $j++) {
-            $relativeComponents->unshift('..');
+            $targetComponents->unshift('..');
         }
 
-        $relativeComponents->unshift('.');
+        // relative marker
+        $targetComponents->unshift('.');
+        // trailing slash
+        if ($targetPath->components->count() && $targetPath->components->top() === '') {
+            $targetComponents->push('');
+        }
 
-        return $this->buildRelative($relativeComponents);
+        return $this->buildRelative($targetComponents);
     }
 
     protected function buildRelative(\SplDoublyLinkedList $components): RelativePathInterface
