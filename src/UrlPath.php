@@ -19,7 +19,7 @@ final class UrlPath extends AbstractAbsolutePath
             throw new \InvalidArgumentException('Url is malformed');
         }
 
-        $path = $urlComponents['path'] ?? '';
+        $urlPath = $urlComponents['path'] ?? '';
 
         $prefix = '';
         if (isset($urlComponents['scheme'])) {
@@ -37,7 +37,7 @@ final class UrlPath extends AbstractAbsolutePath
             $prefix .= $urlComponents['host'] . '/';
         }
 
-        $components = explode('/', $path);
+        $components = explode('/', $urlPath);
 
         $parsedComponents = $this->normalize($components);
 

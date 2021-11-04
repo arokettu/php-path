@@ -159,7 +159,7 @@ class UrlPathTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Relative path went beyond root');
 
-        $path = $path = UrlPath::parse('https://example.com/i/am/test/url/');
+        $path = UrlPath::parse('https://example.com/i/am/test/url/');
         $rp = new RelativePath('../../../../../../../../i/am/test/relative/path');
         $path->resolveRelative($rp, true);
     }
