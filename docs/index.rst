@@ -1,9 +1,9 @@
-Torrent File
+Path Library
 ############
 
 |Packagist| |GitLab| |GitHub| |Bitbucket| |Gitea|
 
-A PHP Class to work with torrent files
+A PHP library to work with absolute and relative paths.
 
 Installation
 ============
