@@ -20,6 +20,7 @@ abstract class AbstractAbsolutePath extends AbstractPath implements AbsolutePath
 
     /**
      * @param static $targetPath
+     * @param \Closure $equals(string $a, string $b): bool
      */
     public function makeRelative(AbsolutePathInterface $targetPath, ?\Closure $equals = null): RelativePathInterface
     {
