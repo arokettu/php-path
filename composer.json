@@ -4,6 +4,7 @@
     "keywords": ["paths", "relative path", "filesystem"],
     "type": "library",
     "license": "MIT",
+    "homepage": "https://sandfox.dev/php/path.html",
     "authors": [
         {
             "name": "Anton Smirnov",
@@ -14,7 +15,8 @@
     ],
     "support": {
         "source": "https://gitlab.com/sandfox/php-path",
-        "issues": "https://gitlab.com/sandfox/php-path/-/issues"
+        "issues": "https://gitlab.com/sandfox/php-path/-/issues",
+        "docs": "https://php-path.readthedocs.io/"
     },
     "config": {
         "sort-packages": true
