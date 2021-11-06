@@ -2,6 +2,6 @@
 
 ## 1.0.0
 
-*date*
+*Nov 6, 2021*
 
 Initial release
