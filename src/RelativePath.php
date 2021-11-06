@@ -33,6 +33,14 @@ final class RelativePath extends AbstractPath implements RelativePathInterface
         return new self($path, DIRECTORY_SEPARATOR === '\\');
     }
 
+    /**
+     * @codeCoverageIgnore OS specific
+     */
+    public static function parse(string $path): self
+    {
+        return self::currentOS($path);
+    }
+
     public function isAbsolute(): bool
     {
         return false;
