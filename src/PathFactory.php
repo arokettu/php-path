@@ -20,7 +20,7 @@ final class PathFactory
             return self::parseUrlLike($path, $matches[1], $urlSchemes, $streamSchemes);
         }
 
-        return DIRECTORY_SEPARATOR === '\\' ? RelativePath::windows($path) : RelativePath::unix($path);
+        return RelativePath::currentOS($path);
     }
 
     private static function parseUrlLike(

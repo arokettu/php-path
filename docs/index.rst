@@ -20,6 +20,7 @@ Documentation
 
    path_interfaces
    path_classes
+   helper_classes
 
 License
 =======

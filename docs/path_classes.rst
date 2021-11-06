@@ -7,12 +7,14 @@ RelativePath
 The only concrete implementation of ``RelativePathInterface``.
 In non-root relative paths first component returned by ``getComponents()`` is either ``'.'`` or ``'..'``.
 
+When resolving relative, windows-ness of the resulting relative will be inherited from the base path.
+
 Available constructors:
 
 .. code-block:: php
 
     <?php
-    public function __construct(string $path, bool $windows = false);
+    new RelativePath(string $path, bool $windows = false);
 
 ``$windows = false``: Unix-like path. Path separators are slashes.
 
@@ -22,21 +24,21 @@ When exporting a string, backslashes are used.
 .. code-block:: php
 
     <?php
-    public static function unix(string $path): self;
+    RelativePath::unix(string $path): self;
 
 Same as ``new RelativePath($path, windows: false)``
 
 .. code-block:: php
 
     <?php
-    public static function windows(string $path): self;
+    RelativePath::windows(string $path): self;
 
 Same as ``new RelativePath($path, windows: true)``
 
 .. code-block:: php
 
     <?php
-    public static function currentOS(string $path): self;
+    RelativePath::currentOS(string $path): self;
 
 If Windows is detected, create a Windows-like path, otherwise create Unix-like path.
 
@@ -45,7 +47,7 @@ If Windows is detected, create a Windows-like path, otherwise create Unix-like p
 .. code-block:: php
 
     <?php
-    public static function parse(string $path): self;
+    RelativePath::parse(string $path): self;
 
 Alias of ``currentOS()``.
 
@@ -59,7 +61,7 @@ No default constructor, only a named constructor is available:
 .. code-block:: php
 
     <?php
-    public static function parse(string $path, bool $strict = false): self
+    FilesystemPath::parse(string $path, bool $strict = false): self;
 
 If Windows is detected, create a Windows path, otherwise create a Unix path.
 Strict mode does not allow to have relative components that traverse beyond root.
@@ -85,8 +87,8 @@ The prefix is ``'/'``
 
     <?php
     // these are equal
-    public function __construct(string $path, bool $strict = false);
-    public static function parse(string $path, bool $strict = false): self;
+    new UnixPath(string $path, bool $strict = false);
+    UnixPath::parse(string $path, bool $strict = false): self;
 
 WindowsPath
 -----------
@@ -97,6 +99,7 @@ WindowsPath
     The library doesn't check for that even in strict mode.
 
 A class for Windows paths.
+``makeRelative()`` returns relatives of the Windows-like type.
 
 Supported paths:
 
@@ -121,8 +124,8 @@ Supported paths:
 
     <?php
     // these are equal
-    public function __construct(string $path, bool $strict = false);
-    public static function parse(string $path, bool $strict = false): self;
+    new WindowsPath(string $path, bool $strict = false);
+    WindowsPath::parse(string $path, bool $strict = false): self;
 
 UrlPath
 =======
@@ -134,8 +137,8 @@ The prefix is scheme + hostname.
 
     <?php
     // these are equal
-    public function __construct(string $path, bool $strict = false);
-    public static function parse(string $path, bool $strict = false): self;
+    new UrlPath(string $path, bool $strict = false);
+    UrlPath::parse(string $path, bool $strict = false): self;
 
 StreamPath
 ==========
@@ -152,5 +155,5 @@ The prefix is scheme.
 
     <?php
     // these are equal
-    public function __construct(string $path, bool $strict = false);
-    public static function parse(string $path, bool $strict = false): self;
+    new StreamPath(string $path, bool $strict = false);
+    StreamPath::parse(string $path, bool $strict = false): self;
