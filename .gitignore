@@ -8,3 +8,6 @@
 # phpunit
 /.phpunit.result.cache
 /reports
+
+# docs
+/docs/build
