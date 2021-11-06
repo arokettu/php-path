@@ -1,5 +1,5 @@
-Interfaces
-##########
+Path Interfaces
+###############
 
 PathInterface
 =============

@@ -18,7 +18,8 @@ Documentation
 .. toctree::
    :maxdepth: 2
 
-   interfaces
+   path_interfaces
+   path_classes
 
 License
 =======
