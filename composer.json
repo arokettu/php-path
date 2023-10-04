@@ -16,7 +16,8 @@
     "support": {
         "source": "https://gitlab.com/sandfox/php-path",
         "issues": "https://gitlab.com/sandfox/php-path/-/issues",
-        "docs": "https://php-path.readthedocs.io/"
+        "docs": "https://php-path.readthedocs.io/",
+        "chat": "https://gitter.im/arokettu/community"
     },
     "config": {
         "allow-plugins": {
