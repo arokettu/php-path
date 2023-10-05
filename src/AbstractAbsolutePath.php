@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Arokettu\Path;
 
 use Arokettu\Path\Helpers\DataTypeHelper;
+use Ds\Deque;
 
 abstract class AbstractAbsolutePath extends AbstractPath implements AbsolutePathInterface
 {
@@ -20,9 +21,9 @@ abstract class AbstractAbsolutePath extends AbstractPath implements AbsolutePath
 
     /**
      * @param static $targetPath
-     * @param \Closure $equals(string $a, string $b): bool
+     * @param callable|null $equals(string $a, string $b): bool
      */
-    public function makeRelative(AbsolutePathInterface $targetPath, ?\Closure $equals = null): RelativePathInterface
+    public function makeRelative(AbsolutePathInterface $targetPath, ?callable $equals = null): RelativePathInterface
     {
         if (\get_class($this) !== \get_class($targetPath) || $this->prefix !== $targetPath->prefix) {
             throw new \InvalidArgumentException(
@@ -33,20 +34,20 @@ abstract class AbstractAbsolutePath extends AbstractPath implements AbsolutePath
         // optimize if the same instance
         if ($this === $targetPath || $this->components === $targetPath->components) {
             return $this->buildRelative(DataTypeHelper::iterableToNewListInstance(
-                $this->components->count() > 0 && $this->components->top() === '' ? ['.', ''] : ['.']
+                $this->components->count() > 0 && $this->components->last() === '' ? ['.', ''] : ['.']
             ));
         }
 
         // strip trailing slash
         $baseComponents = $this->components;
-        if ($baseComponents->count() > 0 && $baseComponents->top() === '') {
+        if ($baseComponents->count() > 0 && $baseComponents->last() === '') {
             $baseComponents = clone $baseComponents; // clone when necessary
             $baseComponents->pop();
         }
 
         // strip trailing slash
         $targetComponents = clone $targetPath->components; // always clone
-        if ($targetComponents->count() > 0 && $targetComponents->top() === '') {
+        if ($targetComponents->count() > 0 && $targetComponents->last() === '') {
             $targetComponents->pop();
         }
 
@@ -73,14 +74,14 @@ abstract class AbstractAbsolutePath extends AbstractPath implements AbsolutePath
         // relative marker
         $targetComponents->unshift('.');
         // trailing slash
-        if ($targetPath->components->count() && $targetPath->components->top() === '') {
+        if ($targetPath->components->count() && $targetPath->components->last() === '') {
             $targetComponents->push('');
         }
 
         return $this->buildRelative($targetComponents);
     }
 
-    protected function buildRelative(\SplDoublyLinkedList $components): RelativePathInterface
+    protected function buildRelative(Deque $components): RelativePathInterface
     {
         $path = new RelativePath('.');
         $path->components = $components;

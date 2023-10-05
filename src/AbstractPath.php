@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Arokettu\Path;
 
 use Arokettu\Path\Helpers\DataTypeHelper;
+use Ds\Deque;
 
 abstract class AbstractPath implements PathInterface
 {
     protected string $prefix;
-    protected \SplDoublyLinkedList $components;
+    /** @var Deque<string> */
+    protected Deque $components;
 
     abstract protected function parsePath(string $path, bool $strict): void;
 
@@ -46,7 +48,7 @@ abstract class AbstractPath implements PathInterface
         $components = clone $this->components;
 
         // remove trailing slash
-        if ($components->top() === '') {
+        if ($components->last() === '') {
             $components->pop();
         }
 
@@ -59,8 +61,8 @@ abstract class AbstractPath implements PathInterface
             if (
                 $relativeComponents[$i] === '..' &&
                 !$components->isEmpty() &&
-                $components->top() !== '..' &&
-                $components->top() !== '.'
+                $components->last() !== '..' &&
+                $components->last() !== '.'
             ) {
                 $components->pop();
                 continue;
@@ -75,7 +77,7 @@ abstract class AbstractPath implements PathInterface
         return $newPath;
     }
 
-    protected function normalize(array $components): \SplDoublyLinkedList
+    protected function normalize(array $components): Deque
     {
         $numComponents = \count($components);
 
@@ -86,7 +88,7 @@ abstract class AbstractPath implements PathInterface
             }
         }
 
-        $componentsList = new \SplDoublyLinkedList();
+        $componentsList = new Deque();
 
         $component = null; // also stores last component ignoring $prevComponent logic
         $prevComponent = null;
@@ -118,7 +120,7 @@ abstract class AbstractPath implements PathInterface
         return $componentsList;
     }
 
-    protected function normalizeHead(\SplDoublyLinkedList $components, bool $strict): \SplDoublyLinkedList
+    protected function normalizeHead(Deque $components, bool $strict): Deque
     {
         while (!$components->isEmpty()) {
             if ($components[0] === '.') {

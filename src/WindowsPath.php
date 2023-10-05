@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Arokettu\Path;
 
 use Arokettu\Path\Helpers\DataTypeHelper;
+use Ds\Deque;
 
 final class WindowsPath extends FilesystemPath
 {
@@ -94,7 +95,7 @@ final class WindowsPath extends FilesystemPath
         return $this->prefix . \iter\join('\\', $this->components);
     }
 
-    protected function buildRelative(\SplDoublyLinkedList $components): RelativePathInterface
+    protected function buildRelative(Deque $components): RelativePathInterface
     {
         $path = new RelativePath('.', true);
         $path->components = $components;

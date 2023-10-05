@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Arokettu\Path;
 
+use Ds\Deque;
+
 final class RelativePath extends AbstractPath implements RelativePathInterface
 {
     private bool $windows;
@@ -99,7 +101,7 @@ final class RelativePath extends AbstractPath implements RelativePathInterface
         return $path;
     }
 
-    protected function normalizeHead(\SplDoublyLinkedList $components, bool $strict): \SplDoublyLinkedList
+    protected function normalizeHead(Deque $components, bool $strict): Deque
     {
         if ($this->isRoot()) {
             return parent::normalizeHead($components, $strict);
