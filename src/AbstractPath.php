@@ -162,4 +162,11 @@ abstract class AbstractPath implements PathInterface
     {
         return iterator_to_array($this->components, false);
     }
+
+    public function __debugInfo(): array
+    {
+        return [
+            'path' => $this->toString(),
+        ];
+    }
 }
