@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Arokettu\Path\Tests;
 
-use Arokettu\Path\PathInterface;
 use Arokettu\Path\RelativePath;
-use Arokettu\Path\RelativePathInterface;
 use PHPUnit\Framework\TestCase;
 
 class RelativePathTest extends TestCase
