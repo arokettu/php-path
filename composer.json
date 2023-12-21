@@ -38,7 +38,6 @@
     "require": {
         "php": "^8.0",
         "nikic/iter": "^2.0",
-        "php-ds/php-ds": "^1.4",
         "symfony/polyfill-php81": "^1.22"
     },
     "require-dev": {
@@ -47,8 +46,5 @@
         "sandfox.dev/code-standard": "^1.2023.06.29",
         "squizlabs/php_codesniffer": "*",
         "vimeo/psalm": "^5.15"
-    },
-    "suggest": {
-        "ext-ds": "More efficient data structures"
     }
 }
