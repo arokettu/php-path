@@ -2,6 +2,12 @@
 
 ## 2.x
 
+### 2.0.1
+
+*Dec 21, 2023*
+
+* Remove ext-ds dependency introduced in 2.0.0 for performance reasons
+
 ### 2.0.0
 
 *Dec 5, 2023*
