@@ -2,6 +2,12 @@
 
 ## 2.x
 
+### 2.0.2
+
+*Dec 21, 2023*
+
+* Fix makeRelative no longer accepting any callable instead of Closure objects (unclean revert in 2.0.1)
+
 ### 2.0.1
 
 *Dec 21, 2023*
