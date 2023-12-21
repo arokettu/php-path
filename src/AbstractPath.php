@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Arokettu\Path;
 
 use Arokettu\Path\Helpers\DataTypeHelper;
+use SplDoublyLinkedList;
 
 abstract class AbstractPath implements PathInterface
 {
     protected string $prefix;
-    protected \SplDoublyLinkedList $components;
+    /** @var SplDoublyLinkedList<string> */
+    protected SplDoublyLinkedList $components;
 
     abstract protected function parsePath(string $path, bool $strict): void;
 
@@ -75,7 +77,7 @@ abstract class AbstractPath implements PathInterface
         return $newPath;
     }
 
-    protected function normalize(array $components): \SplDoublyLinkedList
+    protected function normalize(array $components): SplDoublyLinkedList
     {
         $numComponents = \count($components);
 
@@ -86,7 +88,7 @@ abstract class AbstractPath implements PathInterface
             }
         }
 
-        $componentsList = new \SplDoublyLinkedList();
+        $componentsList = new SplDoublyLinkedList();
 
         $component = null; // also stores last component ignoring $prevComponent logic
         $prevComponent = null;
@@ -118,7 +120,7 @@ abstract class AbstractPath implements PathInterface
         return $componentsList;
     }
 
-    protected function normalizeHead(\SplDoublyLinkedList $components, bool $strict): \SplDoublyLinkedList
+    protected function normalizeHead(SplDoublyLinkedList $components, bool $strict): SplDoublyLinkedList
     {
         while (!$components->isEmpty()) {
             if ($components[0] === '.') {

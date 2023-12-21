@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Arokettu\Path;
 
 use Arokettu\Path\Helpers\DataTypeHelper;
+use SplDoublyLinkedList;
 
 abstract class AbstractAbsolutePath extends AbstractPath implements AbsolutePathInterface
 {
@@ -20,9 +21,9 @@ abstract class AbstractAbsolutePath extends AbstractPath implements AbsolutePath
 
     /**
      * @param static $targetPath
-     * @param \Closure $equals(string $a, string $b): bool
+     * @param callable|null $equals(string $a, string $b): bool
      */
-    public function makeRelative(AbsolutePathInterface $targetPath, ?\Closure $equals = null): RelativePathInterface
+    public function makeRelative(AbsolutePathInterface $targetPath, ?callable $equals = null): RelativePathInterface
     {
         if (\get_class($this) !== \get_class($targetPath) || $this->prefix !== $targetPath->prefix) {
             throw new \InvalidArgumentException(
@@ -80,7 +81,7 @@ abstract class AbstractAbsolutePath extends AbstractPath implements AbsolutePath
         return $this->buildRelative($targetComponents);
     }
 
-    protected function buildRelative(\SplDoublyLinkedList $components): RelativePathInterface
+    protected function buildRelative(SplDoublyLinkedList $components): RelativePathInterface
     {
         $path = new RelativePath('.');
         $path->components = $components;

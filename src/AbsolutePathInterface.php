@@ -8,6 +8,7 @@ interface AbsolutePathInterface extends PathInterface
 {
     /**
      * @param static $targetPath
+     * @param callable|null $equals (string $a, string $b): bool
      */
-    public function makeRelative(self $targetPath, ?\Closure $equals = null): RelativePathInterface;
+    public function makeRelative(self $targetPath, ?callable $equals = null): RelativePathInterface;
 }
