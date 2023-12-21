@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Arokettu\Path;
 
 use Arokettu\Path\Helpers\DataTypeHelper;
-use Ds\Deque;
 
 abstract class AbstractPath implements PathInterface
 {
     protected string $prefix;
-    /** @var Deque<string> */
-    protected Deque $components;
+    protected \SplDoublyLinkedList $components;
 
     abstract protected function parsePath(string $path, bool $strict): void;
 
@@ -48,7 +46,7 @@ abstract class AbstractPath implements PathInterface
         $components = clone $this->components;
 
         // remove trailing slash
-        if ($components->last() === '') {
+        if ($components->top() === '') {
             $components->pop();
         }
 
@@ -61,8 +59,8 @@ abstract class AbstractPath implements PathInterface
             if (
                 $relativeComponents[$i] === '..' &&
                 !$components->isEmpty() &&
-                $components->last() !== '..' &&
-                $components->last() !== '.'
+                $components->top() !== '..' &&
+                $components->top() !== '.'
             ) {
                 $components->pop();
                 continue;
@@ -77,7 +75,7 @@ abstract class AbstractPath implements PathInterface
         return $newPath;
     }
 
-    protected function normalize(array $components): Deque
+    protected function normalize(array $components): \SplDoublyLinkedList
     {
         $numComponents = \count($components);
 
@@ -88,7 +86,7 @@ abstract class AbstractPath implements PathInterface
             }
         }
 
-        $componentsList = new Deque();
+        $componentsList = new \SplDoublyLinkedList();
 
         $component = null; // also stores last component ignoring $prevComponent logic
         $prevComponent = null;
@@ -120,7 +118,7 @@ abstract class AbstractPath implements PathInterface
         return $componentsList;
     }
 
-    protected function normalizeHead(Deque $components, bool $strict): Deque
+    protected function normalizeHead(\SplDoublyLinkedList $components, bool $strict): \SplDoublyLinkedList
     {
         while (!$components->isEmpty()) {
             if ($components[0] === '.') {
