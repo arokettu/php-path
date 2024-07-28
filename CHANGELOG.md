@@ -2,6 +2,12 @@
 
 ## 2.x
 
+### 2.0.3
+
+*Jul 28, 2024*
+
+* Reclassified some exceptions as runtime (`UnexpectedValueException`)
+
 ### 2.0.2
 
 *Dec 21, 2023*
