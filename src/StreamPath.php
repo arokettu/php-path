@@ -14,7 +14,7 @@ final class StreamPath extends AbstractAbsolutePath
     protected function parsePath(string $path, bool $strict): void
     {
         if (!preg_match('@^[-.+a-zA-Z0-9]+://@', $path, $matches)) {
-            throw new \InvalidArgumentException('The path does not appear to be a PHP stream path');
+            throw new \UnexpectedValueException('The path does not appear to be a PHP stream path');
         }
 
         $prefix = $matches[0];
@@ -25,7 +25,7 @@ final class StreamPath extends AbstractAbsolutePath
 
         if ($parsedComponents->count() > 0 && $parsedComponents[0] === '..') {
             if ($strict) {
-                throw new \InvalidArgumentException('Path went beyond root');
+                throw new \UnexpectedValueException('Path went beyond root');
             }
 
             do {

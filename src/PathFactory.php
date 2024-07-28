@@ -41,6 +41,6 @@ final class PathFactory
             return StreamPath::parse($path);
         }
 
-        throw new \InvalidArgumentException('Unknown scheme: ' . $scheme);
+        throw new \UnexpectedValueException('Unknown scheme: ' . $scheme);
     }
 }

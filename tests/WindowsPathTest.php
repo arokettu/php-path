@@ -61,7 +61,7 @@ class WindowsPathTest extends TestCase
 
     public function testCreateInvalidNotAWinPath(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Unrecognized Windows path');
 
         WindowsPath::parse('/home/arokettu');
@@ -69,7 +69,7 @@ class WindowsPathTest extends TestCase
 
     public function testCreateInvalidRelativeWithALetter(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Unrecognized Windows path');
 
         // technically valid but usually useless
@@ -78,7 +78,7 @@ class WindowsPathTest extends TestCase
 
     public function testCreateInvalidRoot(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Unrecognized Windows path');
 
         WindowsPath::parse('X:');
@@ -86,7 +86,7 @@ class WindowsPathTest extends TestCase
 
     public function testCreateInvalidUNCWithSlash(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Slashes are not allowed in UNC paths');
 
         // technically valid but usually useless
@@ -95,7 +95,7 @@ class WindowsPathTest extends TestCase
 
     public function testCreateInvalidUNCWithDots(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('. and .. are not allowed in UNC paths');
 
         // technically valid but usually useless
@@ -142,7 +142,7 @@ class WindowsPathTest extends TestCase
 
     public function testCreateStrictInvalid(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Path went beyond root');
 
         $path = WindowsPath::parse('C:\\..\\..\\I\\Am\\Windows\\Path', true);
@@ -228,7 +228,7 @@ class WindowsPathTest extends TestCase
 
     public function testResolveRelativeStrictInvalid(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Relative path went beyond root');
 
         $path = WindowsPath::parse('c:\\i\\am\\test\\windows\\path');

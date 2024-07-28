@@ -29,7 +29,7 @@ class UnixPathTest extends TestCase
 
     public function testCreateStrict(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Path went beyond root');
 
         UnixPath::parse('/invalid/level/of/nesting/../../../../../../../../../../i/am/test/unix/path', true);
@@ -37,7 +37,7 @@ class UnixPathTest extends TestCase
 
     public function testCreateInvalid(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Valid unix path must begin with a slash');
 
         UnixPath::parse('not/starting/with/slash', true);
@@ -121,7 +121,7 @@ class UnixPathTest extends TestCase
 
     public function testResolveRelativeStrictInvalid(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Relative path went beyond root');
 
         $path = UnixPath::parse('/i/am/test/unix/path');

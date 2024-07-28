@@ -58,7 +58,7 @@ class UrlPathTest extends TestCase
 
     public function testCreateInvalid(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Path went beyond root');
 
         $path = UrlPath::parse('https://example.com/../../i/am/test/url', true);
@@ -156,7 +156,7 @@ class UrlPathTest extends TestCase
 
     public function testResolveRelativeStrictInvalid(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Relative path went beyond root');
 
         $path = UrlPath::parse('https://example.com/i/am/test/url/');

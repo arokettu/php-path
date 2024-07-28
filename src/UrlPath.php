@@ -16,7 +16,7 @@ final class UrlPath extends AbstractAbsolutePath
         $urlComponents = parse_url($path);
 
         if ($urlComponents === false) {
-            throw new \InvalidArgumentException('Url is malformed');
+            throw new \UnexpectedValueException('Url is malformed');
         }
 
         $urlPath = $urlComponents['path'] ?? '';
@@ -43,7 +43,7 @@ final class UrlPath extends AbstractAbsolutePath
 
         if ($parsedComponents->count() > 0 && $parsedComponents[0] === '..') {
             if ($strict) {
-                throw new \InvalidArgumentException('Path went beyond root');
+                throw new \UnexpectedValueException('Path went beyond root');
             }
 
             do {

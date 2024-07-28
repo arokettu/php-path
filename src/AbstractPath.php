@@ -130,7 +130,7 @@ abstract class AbstractPath implements PathInterface
 
             if ($components[0] === '..') {
                 if ($strict) {
-                    throw new \InvalidArgumentException('Relative path went beyond root');
+                    throw new \UnexpectedValueException('Relative path went beyond root');
                 }
 
                 $components->shift();

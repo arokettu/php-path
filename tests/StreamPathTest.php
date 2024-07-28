@@ -29,7 +29,7 @@ class StreamPathTest extends TestCase
 
     public function testCreateStrict(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Path went beyond root');
 
         StreamPath::parse('vfs://invalid/level/of/nesting/../../../../../../../../../../i/am/test/unix/path', true);
@@ -37,7 +37,7 @@ class StreamPathTest extends TestCase
 
     public function testCreateInvalid(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('The path does not appear to be a PHP stream path');
 
         StreamPath::parse('not/starting/with/scheme', true);
@@ -121,7 +121,7 @@ class StreamPathTest extends TestCase
 
     public function testResolveRelativeStrictInvalid(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Relative path went beyond root');
 
         $path = StreamPath::parse('vfs://i/am/test/unix/path');

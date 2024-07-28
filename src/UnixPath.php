@@ -14,7 +14,7 @@ final class UnixPath extends FilesystemPath
     protected function parsePath(string $path, bool $strict): void
     {
         if ($path[0] !== '/') {
-            throw new \InvalidArgumentException('Valid unix path must begin with a slash');
+            throw new \UnexpectedValueException('Valid unix path must begin with a slash');
         }
 
         $components = explode('/', $path);
@@ -23,7 +23,7 @@ final class UnixPath extends FilesystemPath
 
         if ($parsedComponents->count() > 0 && $parsedComponents[0] === '..') {
             if ($strict) {
-                throw new \InvalidArgumentException('Path went beyond root');
+                throw new \UnexpectedValueException('Path went beyond root');
             }
 
             do {

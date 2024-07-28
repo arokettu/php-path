@@ -230,7 +230,7 @@ class RelativePathTest extends TestCase
 
     public function testResolveRelativeStrictAssertion(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Relative path went beyond root');
 
         $p = new RelativePath('/i/am/test/relative/path');

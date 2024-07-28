@@ -44,7 +44,7 @@ class PathFactoryTest extends TestCase
 
     public function testUnknownScheme(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Unknown scheme: unk');
 
         $urlSchemes = ['http', 'https', 'ftp'];

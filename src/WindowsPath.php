@@ -41,7 +41,7 @@ final class WindowsPath extends FilesystemPath
 
             $this->parseUNC($prefix, $restOfPath);
         } else {
-            throw new \InvalidArgumentException('Unrecognized Windows path');
+            throw new \UnexpectedValueException('Unrecognized Windows path');
         }
     }
 
@@ -58,7 +58,7 @@ final class WindowsPath extends FilesystemPath
 
         if ($parsedComponents->count() > 0 && $parsedComponents[0] === '..') {
             if ($strict) {
-                throw new \InvalidArgumentException('Path went beyond root');
+                throw new \UnexpectedValueException('Path went beyond root');
             }
 
             do {
@@ -75,14 +75,14 @@ final class WindowsPath extends FilesystemPath
     private function parseUNC(string $prefix, string $restOfPath): void
     {
         if (str_contains($restOfPath, '/')) {
-            throw new \InvalidArgumentException('Slashes are not allowed in UNC paths');
+            throw new \UnexpectedValueException('Slashes are not allowed in UNC paths');
         }
 
         $components = explode('\\', $restOfPath);
 
         foreach ($components as $component) {
             if ($component === '.' || $component === '..') {
-                throw new \InvalidArgumentException('. and .. are not allowed in UNC paths');
+                throw new \UnexpectedValueException('. and .. are not allowed in UNC paths');
             }
         }
 
