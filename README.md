@@ -8,6 +8,12 @@
 
 A PHP library to work with absolute and relative paths.
 
+## Installation
+
+```bash
+composer require arokettu/path
+```
+
 ## Usage
 
 ```php
@@ -30,12 +36,6 @@ $url = UrlPath::parse('https://example.com/some/path');
 $rel = RelativePath::unix('../other/path');
 $url->resolveRelative($rel)->toString();
 // => https://example.com/some/other/path
-```
-
-## Installation
-
-```bash
-composer require arokettu/path
 ```
 
 ## Documentation
