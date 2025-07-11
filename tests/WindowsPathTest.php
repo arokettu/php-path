@@ -318,4 +318,11 @@ final class WindowsPathTest extends TestCase
 
         self::assertEquals($path, unserialize(serialize($path)));
     }
+
+    public function testDebugInfo(): void
+    {
+        $path = new WindowsPath('C:\\Test');
+
+        self::assertEquals(['path' => 'C:\\Test'], $path->__debugInfo());
+    }
 }

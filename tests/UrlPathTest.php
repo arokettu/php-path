@@ -247,4 +247,11 @@ final class UrlPathTest extends TestCase
 
         self::assertEquals($path, unserialize(serialize($path)));
     }
+
+    public function testDebugInfo(): void
+    {
+        $path = new UrlPath('https://example.com/');
+
+        self::assertEquals(['path' => 'https://example.com/'], $path->__debugInfo());
+    }
 }

@@ -294,4 +294,11 @@ final class UnixPathTest extends TestCase
 
         self::assertEquals($path, unserialize(serialize($path)));
     }
+
+    public function testDebugInfo(): void
+    {
+        $path = new UnixPath('/test');
+
+        self::assertEquals(['path' => '/test'], $path->__debugInfo());
+    }
 }

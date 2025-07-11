@@ -294,4 +294,11 @@ final class StreamPathTest extends TestCase
 
         self::assertEquals($path, unserialize(serialize($path)));
     }
+
+    public function testDebugInfo(): void
+    {
+        $path = new StreamPath('vfs://i/test');
+
+        self::assertEquals(['path' => 'vfs://i/test'], $path->__debugInfo());
+    }
 }

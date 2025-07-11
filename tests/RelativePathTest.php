@@ -271,4 +271,15 @@ final class RelativePathTest extends TestCase
 
         self::assertEquals($path, unserialize(serialize($path)));
     }
+
+    public function testDebugInfo(): void
+    {
+        $path = new RelativePath('../test');
+
+        self::assertEquals(['path' => '../test'], $path->__debugInfo());
+
+        $wPath = new RelativePath('..\\test', true);
+
+        self::assertEquals(['path' => '..\\test'], $wPath->__debugInfo());
+    }
 }
