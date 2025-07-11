@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Arokettu\Path\Tests;
 
+use Arokettu\Path\RelativePath;
+use Arokettu\Path\Tests\Classes\BrokenRelativeImplementation;
 use Arokettu\Path\WindowsPath;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 // minor tests for minor issues
@@ -27,5 +30,15 @@ final class IssuesTest extends TestCase
         $path2 = WindowsPath::parse('C:\\test\\test2');
 
         self::assertEquals('..\\Test1', $path2->makeRelative($path1, $comparer)->toString());
+    }
+
+    public function testBrokenRelative(): void
+    {
+        $path = RelativePath::parse('./test');
+        $broken = new BrokenRelativeImplementation();
+
+        self::expectException(InvalidArgumentException::class);
+        self::expectExceptionMessage('Poor RelativePathInterface implementation: getComponents() must return a list');
+        $path->resolveRelative($broken);
     }
 }
