@@ -12,7 +12,7 @@ use Arokettu\Path\UrlPath;
 use Arokettu\Path\WindowsPath;
 use PHPUnit\Framework\TestCase;
 
-class PathFactoryTest extends TestCase
+final class PathFactoryTest extends TestCase
 {
     public function testValid(): void
     {
@@ -34,11 +34,11 @@ class PathFactoryTest extends TestCase
         $streamSchemes = ['vfs', 'php'];
         self::assertInstanceOf(
             UrlPath::class,
-            PathFactory::parse('https://example.com/test/test', $urlSchemes, $streamSchemes)
+            PathFactory::parse('https://example.com/test/test', $urlSchemes, $streamSchemes),
         );
         self::assertInstanceOf(
             StreamPath::class,
-            PathFactory::parse('vfs://test/test', $urlSchemes, $streamSchemes)
+            PathFactory::parse('vfs://test/test', $urlSchemes, $streamSchemes),
         );
     }
 

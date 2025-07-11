@@ -7,7 +7,7 @@ namespace Arokettu\Path\Tests;
 use Arokettu\Path\PathUtils;
 use PHPUnit\Framework\TestCase;
 
-class PathUtilsTest extends TestCase
+final class PathUtilsTest extends TestCase
 {
     public function testMakeRelative(): void
     {

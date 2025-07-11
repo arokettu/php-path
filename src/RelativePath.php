@@ -61,7 +61,7 @@ final class RelativePath extends AbstractPath implements RelativePathInterface
         // just also parse backslashes
         if ($this->windows) {
             $components = array_merge(
-                ...array_map(fn ($a) => explode('\\', $a), $components)
+                ...array_map(static fn ($a) => explode('\\', $a), $components),
             );
         }
 

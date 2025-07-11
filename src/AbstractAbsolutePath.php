@@ -27,14 +27,14 @@ abstract class AbstractAbsolutePath extends AbstractPath implements AbsolutePath
     {
         if (\get_class($this) !== \get_class($targetPath) || $this->prefix !== $targetPath->prefix) {
             throw new \InvalidArgumentException(
-                'You can only make relative path from paths of same type and same prefix'
+                'You can only make relative path from paths of same type and same prefix',
             );
         }
 
         // optimize if the same instance
         if ($this === $targetPath || $this->components === $targetPath->components) {
             return $this->buildRelative(DataTypeHelper::iterableToNewListInstance(
-                $this->components->count() > 0 && $this->components->top() === '' ? ['.', ''] : ['.']
+                $this->components->count() > 0 && $this->components->top() === '' ? ['.', ''] : ['.'],
             ));
         }
 
@@ -52,7 +52,7 @@ abstract class AbstractAbsolutePath extends AbstractPath implements AbsolutePath
         }
 
         $length = min($baseComponents->count(), $targetComponents->count());
-        $equals ??= fn($a, $b) => $a === $b;
+        $equals ??= static fn ($a, $b) => $a === $b;
 
         for ($i = 0; $i < $length; $i++) {
             if (!$equals($baseComponents[$i], $targetComponents[$i])) {

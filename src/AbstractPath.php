@@ -33,7 +33,7 @@ abstract class AbstractPath implements PathInterface
             $relativeComponents = $path->getComponents();
             if (!array_is_list($relativeComponents)) {
                 throw new \InvalidArgumentException(
-                    'Poor RelativePathInterface implementation: getComponents() must return a list'
+                    'Poor RelativePathInterface implementation: getComponents() must return a list',
                 );
             }
         }

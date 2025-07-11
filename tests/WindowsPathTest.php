@@ -9,7 +9,7 @@ use Arokettu\Path\UnixPath;
 use Arokettu\Path\WindowsPath;
 use PHPUnit\Framework\TestCase;
 
-class WindowsPathTest extends TestCase
+final class WindowsPathTest extends TestCase
 {
     public function testCreate(): void
     {
@@ -157,37 +157,37 @@ class WindowsPathTest extends TestCase
         $rp = RelativePath::windows('\\i\\am\\test\\relative\\path');
         self::assertEquals(
             'C:\\i\\am\\test\\relative\\path',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = RelativePath::windows('i\\am\\test\\relative\\path');
         self::assertEquals(
             'C:\\i\\am\\test\\windows\\path\\i\\am\\test\\relative\\path',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = RelativePath::windows('..\\..\\i\\am\\test\\relative\\path');
         self::assertEquals(
             'C:\\i\\am\\test\\i\\am\\test\\relative\\path',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = RelativePath::windows('..\\..\\..\\..\\..\\..\\..\\..\\i\\am\\test\\relative\\path');
         self::assertEquals(
             'C:\\i\\am\\test\\relative\\path',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = RelativePath::windows('..');
         self::assertEquals(
             'C:\\i\\am\\test\\windows',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = RelativePath::windows('.');
         self::assertEquals(
             'C:\\i\\am\\test\\windows\\path',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
     }
 
@@ -198,31 +198,31 @@ class WindowsPathTest extends TestCase
         $rp = RelativePath::windows('\\i\\am\\test\\relative\\path');
         self::assertEquals(
             'C:\\i\\am\\test\\relative\\path',
-            $path->resolveRelative($rp, true)->toString()
+            $path->resolveRelative($rp, true)->toString(),
         );
 
         $rp = RelativePath::windows('i\\am\\test\\relative\\path');
         self::assertEquals(
             'C:\\i\\am\\test\\windows\\path\\i\\am\\test\\relative\\path',
-            $path->resolveRelative($rp, true)->toString()
+            $path->resolveRelative($rp, true)->toString(),
         );
 
         $rp = RelativePath::windows('..\\..\\i\\am\\test\\relative\\path');
         self::assertEquals(
             'C:\\i\\am\\test\\i\\am\\test\\relative\\path',
-            $path->resolveRelative($rp, true)->toString()
+            $path->resolveRelative($rp, true)->toString(),
         );
 
         $rp = RelativePath::windows('..');
         self::assertEquals(
             'C:\\i\\am\\test\\windows',
-            $path->resolveRelative($rp, true)->toString()
+            $path->resolveRelative($rp, true)->toString(),
         );
 
         $rp = RelativePath::windows('.');
         self::assertEquals(
             'C:\\i\\am\\test\\windows\\path',
-            $path->resolveRelative($rp, true)->toString()
+            $path->resolveRelative($rp, true)->toString(),
         );
     }
 
@@ -236,7 +236,7 @@ class WindowsPathTest extends TestCase
         $rp = RelativePath::windows('..\\..\\..\\..\\..\\..\\..\\..\\i\\am\\test\\relative\\path');
         self::assertEquals(
             'C:\\i\\am\\test\\relative\\path',
-            $path->resolveRelative($rp, true)->toString()
+            $path->resolveRelative($rp, true)->toString(),
         );
     }
 
@@ -250,7 +250,7 @@ class WindowsPathTest extends TestCase
         ];
 
         // simple latin case insensitive
-        $equalFunction = fn ($a, $b) => strtoupper($a) === strtoupper($b);
+        $equalFunction = static fn ($a, $b) => strtoupper($a) === strtoupper($b);
 
         $matrix = [
             [

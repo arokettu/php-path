@@ -51,7 +51,7 @@ final class WindowsPath extends FilesystemPath
         // just also parse backslashes
         $components = explode('/', $restOfPath);
         $components = array_merge(
-            ...array_map(fn ($a) => explode('\\', $a), $components)
+            ...array_map(static fn ($a) => explode('\\', $a), $components),
         );
 
         $parsedComponents = $this->normalize($components);

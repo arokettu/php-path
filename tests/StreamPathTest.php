@@ -9,7 +9,7 @@ use Arokettu\Path\StreamPath;
 use Arokettu\Path\UnixPath;
 use PHPUnit\Framework\TestCase;
 
-class StreamPathTest extends TestCase
+final class StreamPathTest extends TestCase
 {
     public function testCreate(): void
     {
@@ -50,37 +50,37 @@ class StreamPathTest extends TestCase
         $rp = new RelativePath('/i/am/test/relative/path');
         self::assertEquals(
             'vfs://i/am/test/relative/path',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = new RelativePath('i/am/test/relative/path');
         self::assertEquals(
             'vfs://i/am/test/unix/path/i/am/test/relative/path',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = new RelativePath('../../i/am/test/relative/path');
         self::assertEquals(
             'vfs://i/am/test/i/am/test/relative/path',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = new RelativePath('../../../../../../../../i/am/test/relative/path');
         self::assertEquals(
             'vfs://i/am/test/relative/path',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = new RelativePath('..');
         self::assertEquals(
             'vfs://i/am/test/unix',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = new RelativePath('.');
         self::assertEquals(
             'vfs://i/am/test/unix/path',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
     }
 
@@ -91,31 +91,31 @@ class StreamPathTest extends TestCase
         $rp = new RelativePath('/i/am/test/relative/path');
         self::assertEquals(
             'vfs://i/am/test/relative/path',
-            $path->resolveRelative($rp, true)->toString()
+            $path->resolveRelative($rp, true)->toString(),
         );
 
         $rp = new RelativePath('i/am/test/relative/path');
         self::assertEquals(
             'vfs://i/am/test/unix/path/i/am/test/relative/path',
-            $path->resolveRelative($rp, true)->toString()
+            $path->resolveRelative($rp, true)->toString(),
         );
 
         $rp = new RelativePath('../../i/am/test/relative/path');
         self::assertEquals(
             'vfs://i/am/test/i/am/test/relative/path',
-            $path->resolveRelative($rp, true)->toString()
+            $path->resolveRelative($rp, true)->toString(),
         );
 
         $rp = new RelativePath('..');
         self::assertEquals(
             'vfs://i/am/test/unix',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = new RelativePath('.');
         self::assertEquals(
             'vfs://i/am/test/unix/path',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
     }
 
@@ -217,7 +217,7 @@ class StreamPathTest extends TestCase
                 self::assertEquals(
                     $result,
                     $bp->makeRelative($tp)->toString(),
-                    sprintf('Unexpected relative of base %s and target %s', \strval($bp), \strval($tp)),
+                    \sprintf('Unexpected relative of base %s and target %s', \strval($bp), \strval($tp)),
                 );
             }
         }
@@ -266,7 +266,7 @@ class StreamPathTest extends TestCase
                 self::assertEquals(
                     $result,
                     $bp->makeRelative($tp)->toString(),
-                    sprintf('Unexpected relative of base %s and target %s', \strval($bp), \strval($tp)),
+                    \sprintf('Unexpected relative of base %s and target %s', \strval($bp), \strval($tp)),
                 );
             }
         }

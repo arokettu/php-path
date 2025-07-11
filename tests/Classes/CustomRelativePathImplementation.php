@@ -7,7 +7,7 @@ namespace Arokettu\Path\Tests\Classes;
 use Arokettu\Path\PathInterface;
 use Arokettu\Path\RelativePathInterface;
 
-class CustomRelativePathImplementation implements RelativePathInterface
+final class CustomRelativePathImplementation implements RelativePathInterface
 {
     private array $components;
     private bool $isRoot;

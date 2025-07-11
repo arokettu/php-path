@@ -8,7 +8,7 @@ use Arokettu\Path\WindowsPath;
 use PHPUnit\Framework\TestCase;
 
 // minor tests for minor issues
-class IssuesTest extends TestCase
+final class IssuesTest extends TestCase
 {
     public function testCallable(): void
     {

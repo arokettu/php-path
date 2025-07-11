@@ -9,7 +9,7 @@ use Arokettu\Path\UnixPath;
 use Arokettu\Path\UrlPath;
 use PHPUnit\Framework\TestCase;
 
-class UrlPathTest extends TestCase
+final class UrlPathTest extends TestCase
 {
     public function testCreate(): void
     {
@@ -73,49 +73,49 @@ class UrlPathTest extends TestCase
         $rp = new RelativePath('/i/am/test/relative/path');
         self::assertEquals(
             'https://example.com/i/am/test/relative/path',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = new RelativePath('i/am/test/relative/path');
         self::assertEquals(
             'https://example.com/i/am/test/url/i/am/test/relative/path',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = new RelativePath('../../i/am/test/relative/path');
         self::assertEquals(
             'https://example.com/i/am/i/am/test/relative/path',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = new RelativePath('../../../../../../../../i/am/test/relative/path');
         self::assertEquals(
             'https://example.com/i/am/test/relative/path',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = new RelativePath('..');
         self::assertEquals(
             'https://example.com/i/am/test',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = new RelativePath('.');
         self::assertEquals(
             'https://example.com/i/am/test/url',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = new RelativePath('../');
         self::assertEquals(
             'https://example.com/i/am/test/',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = new RelativePath('./');
         self::assertEquals(
             'https://example.com/i/am/test/url/',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
     }
 
@@ -126,31 +126,31 @@ class UrlPathTest extends TestCase
         $rp = new RelativePath('/i/am/test/relative/path');
         self::assertEquals(
             'https://example.com/i/am/test/relative/path',
-            $path->resolveRelative($rp, true)->toString()
+            $path->resolveRelative($rp, true)->toString(),
         );
 
         $rp = new RelativePath('i/am/test/relative/path');
         self::assertEquals(
             'https://example.com/i/am/test/url/i/am/test/relative/path',
-            $path->resolveRelative($rp, true)->toString()
+            $path->resolveRelative($rp, true)->toString(),
         );
 
         $rp = new RelativePath('../../i/am/test/relative/path');
         self::assertEquals(
             'https://example.com/i/am/i/am/test/relative/path',
-            $path->resolveRelative($rp, true)->toString()
+            $path->resolveRelative($rp, true)->toString(),
         );
 
         $rp = new RelativePath('..');
         self::assertEquals(
             'https://example.com/i/am/test',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
 
         $rp = new RelativePath('.');
         self::assertEquals(
             'https://example.com/i/am/test/url',
-            $path->resolveRelative($rp)->toString()
+            $path->resolveRelative($rp)->toString(),
         );
     }
 
@@ -219,7 +219,7 @@ class UrlPathTest extends TestCase
                 self::assertEquals(
                     $result,
                     $bp->makeRelative($tp)->toString(),
-                    sprintf('Unexpected relative of base %s and target %s', \strval($bp), \strval($tp)),
+                    \sprintf('Unexpected relative of base %s and target %s', \strval($bp), \strval($tp)),
                 );
             }
         }

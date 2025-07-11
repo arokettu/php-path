@@ -43,8 +43,8 @@
     "require-dev": {
         "phpunit/phpunit": "^9.5",
         "psy/psysh": "*",
-        "sandfox.dev/code-standard": "^1.2023.06.29",
+        "sandfox.dev/code-standard": "^1.2025.06.29",
         "squizlabs/php_codesniffer": "*",
-        "vimeo/psalm": "^5.15"
+        "vimeo/psalm": "^5.15 || ^6"
     }
 }
