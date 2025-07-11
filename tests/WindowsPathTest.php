@@ -17,46 +17,55 @@ final class WindowsPathTest extends TestCase
         $path = WindowsPath::parse('C:\\I\\Am\\Windows\\Path');
         self::assertEquals('C:\\I\\Am\\Windows\\Path', $path->toString());
         self::assertEquals('C:\\', $path->getPrefix());
+        self::assertEquals(['I', 'Am', 'Windows', 'Path'], $path->getComponents());
 
         // dos path to be normalized
         $path = WindowsPath::parse('z:/home/arokettu/wine/./path\\Games\\Something/../../Tools/file.exe');
         self::assertEquals('Z:\\home\\arokettu\\wine\\path\\Tools\\file.exe', $path->toString());
         self::assertEquals('Z:\\', $path->getPrefix());
+        self::assertEquals(['home', 'arokettu', 'wine', 'path', 'Tools', 'file.exe'], $path->getComponents());
 
         // non strictly valid dos path
         $path = WindowsPath::parse('C:\\..\\..\\I\\Am\\Windows\\Path');
         self::assertEquals('C:\\I\\Am\\Windows\\Path', $path->toString());
         self::assertEquals('C:\\', $path->getPrefix());
+        self::assertEquals(['I', 'Am', 'Windows', 'Path'], $path->getComponents());
 
         // local unc path (drive letter)
         $path = WindowsPath::parse('\\\\.\\c:\\windows\\win.ini');
         self::assertEquals('\\\\.\\C:\\windows\\win.ini', $path->toString());
         self::assertEquals('\\\\.\\C:\\', $path->getPrefix());
+        self::assertEquals(['windows', 'win.ini'], $path->getComponents());
 
         // local unc path (guid)
         $path = WindowsPath::parse('\\\\?\\Volume{D4AF2203-A75B-4CB1-9B93-AE78EB9A50A5}\\windows\\win.ini');
         self::assertEquals('\\\\?\\Volume{D4AF2203-A75B-4CB1-9B93-AE78EB9A50A5}\\windows\\win.ini', $path->toString());
         self::assertEquals('\\\\?\\Volume{D4AF2203-A75B-4CB1-9B93-AE78EB9A50A5}\\', $path->getPrefix());
+        self::assertEquals(['windows', 'win.ini'], $path->getComponents());
 
         // remote share
         $path = WindowsPath::parse('\\\\MYPC\\c$\\windows\\win.ini');
         self::assertEquals('\\\\MYPC\\c$\\windows\\win.ini', $path->toString());
         self::assertEquals('\\\\MYPC\\', $path->getPrefix());
+        self::assertEquals(['c$', 'windows', 'win.ini'], $path->getComponents());
 
         // remote share single char
         $path = WindowsPath::parse('\\\\M\\c$\\windows\\win.ini');
         self::assertEquals('\\\\M\\c$\\windows\\win.ini', $path->toString());
         self::assertEquals('\\\\M\\', $path->getPrefix());
+        self::assertEquals(['c$', 'windows', 'win.ini'], $path->getComponents());
 
         // remote share starts with dot
         $path = WindowsPath::parse('\\\\.MYPC\\c$\\windows\\win.ini');
         self::assertEquals('\\\\.MYPC\\c$\\windows\\win.ini', $path->toString());
         self::assertEquals('\\\\.MYPC\\', $path->getPrefix());
+        self::assertEquals(['c$', 'windows', 'win.ini'], $path->getComponents());
 
         // root path
         $path = WindowsPath::parse('X:\\');
         self::assertEquals('X:\\', $path->toString());
         self::assertEquals('X:\\', $path->getPrefix());
+        self::assertEquals([], $path->getComponents());
     }
 
     public function testCreateInvalidNotAWinPath(): void
