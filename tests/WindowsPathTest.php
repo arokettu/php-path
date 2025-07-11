@@ -303,4 +303,12 @@ final class WindowsPathTest extends TestCase
 
         WindowsPath::parse('C:\\Windows')->makeRelative(WindowsPath::parse('D:\\Windows'));
     }
+
+    public function testFlags(): void
+    {
+        $path = new WindowsPath('C:\\Test');
+
+        self::assertTrue($path->isAbsolute());
+        self::assertFalse($path->isRelative());
+    }
 }

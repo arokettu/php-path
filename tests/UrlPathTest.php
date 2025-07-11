@@ -232,4 +232,12 @@ final class UrlPathTest extends TestCase
 
         UrlPath::parse('https://example.com/')->makeRelative(UnixPath::parse('/i/am/test/unix/path'));
     }
+
+    public function testFlags(): void
+    {
+        $path = new UrlPath('https://example.com/');
+
+        self::assertTrue($path->isAbsolute());
+        self::assertFalse($path->isRelative());
+    }
 }

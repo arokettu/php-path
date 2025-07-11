@@ -279,4 +279,12 @@ final class StreamPathTest extends TestCase
 
         StreamPath::parse('vfs://i/am/test/unix/path')->makeRelative(UnixPath::parse('/i/am/test/unix/path'));
     }
+
+    public function testFlags(): void
+    {
+        $path = new StreamPath('vfs://i/test');
+
+        self::assertTrue($path->isAbsolute());
+        self::assertFalse($path->isRelative());
+    }
 }

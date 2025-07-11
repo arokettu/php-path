@@ -279,4 +279,12 @@ final class UnixPathTest extends TestCase
 
         UnixPath::parse('/i/am/test/unix/path')->makeRelative(WindowsPath::parse('C:\\Windows'));
     }
+
+    public function testFlags(): void
+    {
+        $path = new UnixPath('/test');
+
+        self::assertTrue($path->isAbsolute());
+        self::assertFalse($path->isRelative());
+    }
 }

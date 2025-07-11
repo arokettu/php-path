@@ -256,4 +256,12 @@ final class RelativePathTest extends TestCase
         self::assertEquals('i/am/test/i/am/test/relative/path', $p->resolveRelative($rp1)->toString());
         self::assertEquals('/i/am/test/relative/path', $p->resolveRelative($rp2)->toString());
     }
+
+    public function testFlags(): void
+    {
+        $path = new RelativePath('../test');
+
+        self::assertFalse($path->isAbsolute());
+        self::assertTrue($path->isRelative());
+    }
 }
