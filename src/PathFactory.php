@@ -27,7 +27,7 @@ final class PathFactory
         string $path,
         string $scheme,
         array $urlSchemes = [],
-        array $streamSchemes = []
+        array $streamSchemes = [],
     ): PathInterface {
         if ($urlSchemes === [] && $streamSchemes === []) {
             return UrlPath::parse($path);

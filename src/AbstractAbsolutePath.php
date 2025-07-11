@@ -23,9 +23,9 @@ abstract class AbstractAbsolutePath extends AbstractPath implements AbsolutePath
      * @param static $targetPath
      * @param callable|null $equals(string $a, string $b): bool
      */
-    public function makeRelative(AbsolutePathInterface $targetPath, ?callable $equals = null): RelativePathInterface
+    public function makeRelative(AbsolutePathInterface $targetPath, callable|null $equals = null): RelativePathInterface
     {
-        if (\get_class($this) !== \get_class($targetPath) || $this->prefix !== $targetPath->prefix) {
+        if ($this::class !== $targetPath::class || $this->prefix !== $targetPath->prefix) {
             throw new \InvalidArgumentException(
                 'You can only make relative path from paths of same type and same prefix',
             );
