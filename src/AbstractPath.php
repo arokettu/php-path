@@ -169,4 +169,14 @@ abstract class AbstractPath implements PathInterface
             'path' => $this->toString(),
         ];
     }
+
+    public function __serialize(): array
+    {
+        return [$this->prefix, $this->components];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        [$this->prefix, $this->components] = $data;
+    }
 }
