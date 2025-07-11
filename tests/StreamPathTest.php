@@ -287,4 +287,11 @@ final class StreamPathTest extends TestCase
         self::assertTrue($path->isAbsolute());
         self::assertFalse($path->isRelative());
     }
+
+    public function testSerialize(): void
+    {
+        $path = new StreamPath('vfs://i/test');
+
+        self::assertEquals($path, unserialize(serialize($path)));
+    }
 }

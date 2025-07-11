@@ -240,4 +240,11 @@ final class UrlPathTest extends TestCase
         self::assertTrue($path->isAbsolute());
         self::assertFalse($path->isRelative());
     }
+
+    public function testSerialize(): void
+    {
+        $path = new UrlPath('https://example.com/');
+
+        self::assertEquals($path, unserialize(serialize($path)));
+    }
 }

@@ -120,4 +120,14 @@ final class RelativePath extends AbstractPath implements RelativePathInterface
 
         return $components;
     }
+
+    public function __serialize(): array
+    {
+        return [$this->prefix, $this->components, $this->windows];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        [$this->prefix, $this->components, $this->windows] = $data;
+    }
 }

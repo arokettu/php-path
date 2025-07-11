@@ -311,4 +311,11 @@ final class WindowsPathTest extends TestCase
         self::assertTrue($path->isAbsolute());
         self::assertFalse($path->isRelative());
     }
+
+    public function testSerialize(): void
+    {
+        $path = new WindowsPath('C:\\Test');
+
+        self::assertEquals($path, unserialize(serialize($path)));
+    }
 }

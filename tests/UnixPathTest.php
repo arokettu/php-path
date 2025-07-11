@@ -287,4 +287,11 @@ final class UnixPathTest extends TestCase
         self::assertTrue($path->isAbsolute());
         self::assertFalse($path->isRelative());
     }
+
+    public function testSerialize(): void
+    {
+        $path = new UnixPath('/test');
+
+        self::assertEquals($path, unserialize(serialize($path)));
+    }
 }

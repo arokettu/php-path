@@ -264,4 +264,11 @@ final class RelativePathTest extends TestCase
         self::assertFalse($path->isAbsolute());
         self::assertTrue($path->isRelative());
     }
+
+    public function testSerialize(): void
+    {
+        $path = new RelativePath('../test');
+
+        self::assertEquals($path, unserialize(serialize($path)));
+    }
 }
