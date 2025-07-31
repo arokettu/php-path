@@ -39,7 +39,7 @@
         "php": "^8.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "^11.5",
+        "phpunit/phpunit": "^12.2",
         "psy/psysh": "*",
         "sandfox.dev/code-standard": "^1.2025.06.29",
         "squizlabs/php_codesniffer": "*",
