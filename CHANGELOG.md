@@ -11,6 +11,12 @@
 
 ## 2.x
 
+### 2.1.0
+
+*Aug 1, 2025*
+
+* Added ``$prefix`` and ``$components`` properties
+
 ### 2.0.3
 
 *Jul 28, 2024*
