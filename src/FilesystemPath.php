@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Arokettu\Path;
 
+use Error;
+
 abstract readonly class FilesystemPath extends AbstractAbsolutePath
 {
     /**
@@ -19,6 +21,6 @@ abstract readonly class FilesystemPath extends AbstractAbsolutePath
             return new UnixPath($path, $strict);
         }
 
-        throw new \LogicException('Unknown directory separator: ' . DIRECTORY_SEPARATOR);
+        throw new Error('Unknown directory separator: ' . DIRECTORY_SEPARATOR);
     }
 }

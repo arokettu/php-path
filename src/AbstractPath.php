@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Arokettu\Path;
 
+use Arokettu\Path\Exceptions\PathWentBeyondRootException;
+use TypeError;
+
 abstract readonly class AbstractPath implements PathInterface
 {
     public string $prefix;
@@ -29,7 +32,7 @@ abstract readonly class AbstractPath implements PathInterface
             // allow external implementations
             $relativeComponents = $path->components;
             if (!array_is_list($relativeComponents)) {
-                throw new \InvalidArgumentException(
+                throw new TypeError(
                     'Poor RelativePathInterface implementation: getComponents() must return a list',
                 );
             }
@@ -129,7 +132,7 @@ abstract readonly class AbstractPath implements PathInterface
 
             if ($components[0] === '..') {
                 if ($strict) {
-                    throw new \UnexpectedValueException('Relative path went beyond root');
+                    throw new PathWentBeyondRootException('Relative path went beyond root');
                 }
 
                 array_shift($components);

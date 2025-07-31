@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Arokettu\Path\Tests;
 
+use Arokettu\Path\Exceptions\PathWentBeyondRootException;
 use Arokettu\Path\RelativePath;
 use Arokettu\Path\StreamPath;
 use Arokettu\Path\UnixPath;
 use PHPUnit\Framework\TestCase;
+use ValueError;
 
 final class StreamPathTest extends TestCase
 {
@@ -29,7 +31,7 @@ final class StreamPathTest extends TestCase
 
     public function testCreateStrict(): void
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(PathWentBeyondRootException::class);
         $this->expectExceptionMessage('Path went beyond root');
 
         StreamPath::parse('vfs://invalid/level/of/nesting/../../../../../../../../../../i/am/test/unix/path', true);
@@ -37,7 +39,7 @@ final class StreamPathTest extends TestCase
 
     public function testCreateInvalid(): void
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(ValueError::class);
         $this->expectExceptionMessage('The path does not appear to be a PHP stream path');
 
         StreamPath::parse('not/starting/with/scheme', true);
@@ -121,11 +123,12 @@ final class StreamPathTest extends TestCase
 
     public function testResolveRelativeStrictInvalid(): void
     {
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionMessage('Relative path went beyond root');
-
         $path = StreamPath::parse('vfs://i/am/test/unix/path');
         $rp4 = new RelativePath('../../../../../../../../i/am/test/relative/path');
+
+        $this->expectException(PathWentBeyondRootException::class);
+        $this->expectExceptionMessage('Relative path went beyond root');
+
         $path->resolveRelative($rp4, true);
     }
 
@@ -274,7 +277,7 @@ final class StreamPathTest extends TestCase
 
     public function testMakeRelativeWrongType(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(ValueError::class);
         $this->expectExceptionMessage('You can only make relative path from paths of same type and same prefix');
 
         StreamPath::parse('vfs://i/am/test/unix/path')->makeRelative(UnixPath::parse('/i/am/test/unix/path'));

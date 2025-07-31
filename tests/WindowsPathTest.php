@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Arokettu\Path\Tests;
 
+use Arokettu\Path\Exceptions\PathWentBeyondRootException;
 use Arokettu\Path\RelativePath;
 use Arokettu\Path\UnixPath;
 use Arokettu\Path\WindowsPath;
 use PHPUnit\Framework\TestCase;
+use ValueError;
 
 final class WindowsPathTest extends TestCase
 {
@@ -70,7 +72,7 @@ final class WindowsPathTest extends TestCase
 
     public function testCreateInvalidNotAWinPath(): void
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(ValueError::class);
         $this->expectExceptionMessage('Unrecognized Windows path');
 
         WindowsPath::parse('/home/arokettu');
@@ -78,7 +80,7 @@ final class WindowsPathTest extends TestCase
 
     public function testCreateInvalidRelativeWithALetter(): void
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(ValueError::class);
         $this->expectExceptionMessage('Unrecognized Windows path');
 
         // technically valid but usually useless
@@ -87,7 +89,7 @@ final class WindowsPathTest extends TestCase
 
     public function testCreateInvalidRoot(): void
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(ValueError::class);
         $this->expectExceptionMessage('Unrecognized Windows path');
 
         WindowsPath::parse('X:');
@@ -95,7 +97,7 @@ final class WindowsPathTest extends TestCase
 
     public function testCreateInvalidUNCWithSlash(): void
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(ValueError::class);
         $this->expectExceptionMessage('Slashes are not allowed in UNC paths');
 
         // technically valid but usually useless
@@ -104,7 +106,7 @@ final class WindowsPathTest extends TestCase
 
     public function testCreateInvalidUNCWithDots(): void
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(ValueError::class);
         $this->expectExceptionMessage('. and .. are not allowed in UNC paths');
 
         // technically valid but usually useless
@@ -151,12 +153,10 @@ final class WindowsPathTest extends TestCase
 
     public function testCreateStrictInvalid(): void
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(PathWentBeyondRootException::class);
         $this->expectExceptionMessage('Path went beyond root');
 
-        $path = WindowsPath::parse('C:\\..\\..\\I\\Am\\Windows\\Path', true);
-        self::assertEquals('C:\\I\\Am\\Windows\\Path', $path->toString());
-        self::assertEquals('C:\\', $path->prefix);
+        WindowsPath::parse('C:\\..\\..\\I\\Am\\Windows\\Path', true);
     }
 
     public function testResolveRelative(): void
@@ -237,16 +237,13 @@ final class WindowsPathTest extends TestCase
 
     public function testResolveRelativeStrictInvalid(): void
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $path = WindowsPath::parse('c:\\i\\am\\test\\windows\\path');
+        $rp = RelativePath::windows('..\\..\\..\\..\\..\\..\\..\\..\\i\\am\\test\\relative\\path');
+
+        $this->expectException(PathWentBeyondRootException::class);
         $this->expectExceptionMessage('Relative path went beyond root');
 
-        $path = WindowsPath::parse('c:\\i\\am\\test\\windows\\path');
-
-        $rp = RelativePath::windows('..\\..\\..\\..\\..\\..\\..\\..\\i\\am\\test\\relative\\path');
-        self::assertEquals(
-            'C:\\i\\am\\test\\relative\\path',
-            $path->resolveRelative($rp, true)->toString(),
-        );
+        $path->resolveRelative($rp, true)->toString();
     }
 
     public function testMakeRelative(): void
@@ -299,7 +296,7 @@ final class WindowsPathTest extends TestCase
 
     public function testMakeRelativeWrongType(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(ValueError::class);
         $this->expectExceptionMessage('You can only make relative path from paths of same type and same prefix');
 
         WindowsPath::parse('C:\\Windows')->makeRelative(UnixPath::parse('/i/am/test/unix/path'));
@@ -307,7 +304,7 @@ final class WindowsPathTest extends TestCase
 
     public function testMakeRelativeWrongPrefix(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(ValueError::class);
         $this->expectExceptionMessage('You can only make relative path from paths of same type and same prefix');
 
         WindowsPath::parse('C:\\Windows')->makeRelative(WindowsPath::parse('D:\\Windows'));

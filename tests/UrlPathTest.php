@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Arokettu\Path\Tests;
 
+use Arokettu\Path\Exceptions\PathWentBeyondRootException;
 use Arokettu\Path\RelativePath;
 use Arokettu\Path\UnixPath;
 use Arokettu\Path\UrlPath;
 use PHPUnit\Framework\TestCase;
+use ValueError;
 
 final class UrlPathTest extends TestCase
 {
@@ -67,13 +69,10 @@ final class UrlPathTest extends TestCase
 
     public function testCreateInvalid(): void
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(PathWentBeyondRootException::class);
         $this->expectExceptionMessage('Path went beyond root');
 
-        $path = UrlPath::parse('https://example.com/../../i/am/test/url', true);
-        self::assertEquals('https://example.com/i/am/test/url', $path->toString());
-        self::assertEquals('https://example.com/', $path->prefix);
-        self::assertEquals(['i', 'am', 'test', 'url'], $path->components);
+        UrlPath::parse('https://example.com/../../i/am/test/url', true);
     }
 
     public function testResolveRelative(): void
@@ -166,11 +165,12 @@ final class UrlPathTest extends TestCase
 
     public function testResolveRelativeStrictInvalid(): void
     {
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionMessage('Relative path went beyond root');
-
         $path = UrlPath::parse('https://example.com/i/am/test/url/');
         $rp = new RelativePath('../../../../../../../../i/am/test/relative/path');
+
+        $this->expectException(PathWentBeyondRootException::class);
+        $this->expectExceptionMessage('Relative path went beyond root');
+
         $path->resolveRelative($rp, true);
     }
 
@@ -237,7 +237,7 @@ final class UrlPathTest extends TestCase
 
     public function testMakeRelativeWrongType(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(ValueError::class);
         $this->expectExceptionMessage('You can only make relative path from paths of same type and same prefix');
 
         UrlPath::parse('https://example.com/')->makeRelative(UnixPath::parse('/i/am/test/unix/path'));

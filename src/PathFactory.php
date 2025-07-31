@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Arokettu\Path;
 
+use ValueError;
+
 final class PathFactory
 {
     public static function parse(string $path, array $urlSchemes = [], array $streamSchemes = []): PathInterface
@@ -41,6 +43,6 @@ final class PathFactory
             return StreamPath::parse($path);
         }
 
-        throw new \UnexpectedValueException('Unknown scheme: ' . $scheme);
+        throw new ValueError('Unknown scheme: ' . $scheme);
     }
 }

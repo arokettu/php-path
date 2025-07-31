@@ -11,6 +11,7 @@ use Arokettu\Path\UnixPath;
 use Arokettu\Path\UrlPath;
 use Arokettu\Path\WindowsPath;
 use PHPUnit\Framework\TestCase;
+use ValueError;
 
 final class PathFactoryTest extends TestCase
 {
@@ -44,11 +45,11 @@ final class PathFactoryTest extends TestCase
 
     public function testUnknownScheme(): void
     {
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionMessage('Unknown scheme: unk');
-
         $urlSchemes = ['http', 'https', 'ftp'];
         $streamSchemes = ['vfs', 'php'];
+
+        $this->expectException(ValueError::class);
+        $this->expectExceptionMessage('Unknown scheme: unk');
 
         PathFactory::parse('unk://test/test', $urlSchemes, $streamSchemes);
     }

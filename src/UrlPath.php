@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Arokettu\Path;
 
+use Arokettu\Path\Exceptions\PathWentBeyondRootException;
+use ValueError;
+
 final readonly class UrlPath extends AbstractAbsolutePath
 {
     public static function parse(string $path, bool $strict = false): self
@@ -16,7 +19,7 @@ final readonly class UrlPath extends AbstractAbsolutePath
         $urlComponents = parse_url($path);
 
         if ($urlComponents === false) {
-            throw new \UnexpectedValueException('Url is malformed');
+            throw new ValueError('Url is malformed');
         }
 
         $urlPath = $urlComponents['path'] ?? '';
@@ -43,7 +46,7 @@ final readonly class UrlPath extends AbstractAbsolutePath
 
         if ($parsedComponents !== [] && $parsedComponents[0] === '..') {
             if ($strict) {
-                throw new \UnexpectedValueException('Path went beyond root');
+                throw new PathWentBeyondRootException('Path went beyond root');
             }
 
             do {

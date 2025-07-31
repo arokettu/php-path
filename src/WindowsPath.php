@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Arokettu\Path;
 
+use Arokettu\Path\Exceptions\PathWentBeyondRootException;
+use ValueError;
+
 final readonly class WindowsPath extends FilesystemPath
 {
     public static function parse(string $path, bool $strict = false): self
@@ -38,7 +41,7 @@ final readonly class WindowsPath extends FilesystemPath
 
             $this->parseUNC($prefix, $restOfPath);
         } else {
-            throw new \UnexpectedValueException('Unrecognized Windows path');
+            throw new ValueError('Unrecognized Windows path');
         }
     }
 
@@ -55,7 +58,7 @@ final readonly class WindowsPath extends FilesystemPath
 
         if ($parsedComponents !== [] && $parsedComponents[0] === '..') {
             if ($strict) {
-                throw new \UnexpectedValueException('Path went beyond root');
+                throw new PathWentBeyondRootException('Path went beyond root');
             }
 
             do {
@@ -72,14 +75,14 @@ final readonly class WindowsPath extends FilesystemPath
     private function parseUNC(string $prefix, string $restOfPath): void
     {
         if (str_contains($restOfPath, '/')) {
-            throw new \UnexpectedValueException('Slashes are not allowed in UNC paths');
+            throw new ValueError('Slashes are not allowed in UNC paths');
         }
 
         $components = explode('\\', $restOfPath);
 
         foreach ($components as $component) {
             if ($component === '.' || $component === '..') {
-                throw new \UnexpectedValueException('. and .. are not allowed in UNC paths');
+                throw new ValueError('. and .. are not allowed in UNC paths');
             }
         }
 

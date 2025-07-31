@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Arokettu\Path\Tests;
 
+use Arokettu\Path\Exceptions\PathWentBeyondRootException;
 use Arokettu\Path\RelativePath;
 use PHPUnit\Framework\TestCase;
 
@@ -230,11 +231,11 @@ final class RelativePathTest extends TestCase
 
     public function testResolveRelativeStrictAssertion(): void
     {
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionMessage('Relative path went beyond root');
-
         $p = new RelativePath('/i/am/test/relative/path');
         $rp = new RelativePath('../../../../../../../../i/am/test/relative/path');
+
+        $this->expectException(PathWentBeyondRootException::class);
+        $this->expectExceptionMessage('Relative path went beyond root');
 
         $p->resolveRelative($rp, true);
     }

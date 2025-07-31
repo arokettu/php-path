@@ -6,6 +6,7 @@ namespace Arokettu\Path\Tests;
 
 use Arokettu\Path\PathUtils;
 use Arokettu\Path\Tests\Classes\NotARelativeNotAnAbsolute;
+use Error;
 use PHPUnit\Framework\TestCase;
 
 final class PathUtilsTest extends TestCase
@@ -61,7 +62,7 @@ final class PathUtilsTest extends TestCase
 
     public function testResolveRelativeBroken(): void
     {
-        self::expectException(\LogicException::class);
+        self::expectException(Error::class);
         self::expectExceptionMessage(
             'PathInterface object must be either AbsolutePathInterface or RelativePathInterface',
         );

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Arokettu\Path;
 
+use ValueError;
+
 abstract readonly class AbstractAbsolutePath extends AbstractPath implements AbsolutePathInterface
 {
     public function isAbsolute(): bool
@@ -23,7 +25,7 @@ abstract readonly class AbstractAbsolutePath extends AbstractPath implements Abs
     public function makeRelative(AbsolutePathInterface $targetPath, callable|null $equals = null): RelativePathInterface
     {
         if ($this::class !== $targetPath::class || $this->prefix !== $targetPath->prefix) {
-            throw new \InvalidArgumentException(
+            throw new ValueError(
                 'You can only make relative path from paths of same type and same prefix',
             );
         }

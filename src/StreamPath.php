@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Arokettu\Path;
 
+use Arokettu\Path\Exceptions\PathWentBeyondRootException;
+use ValueError;
+
 final readonly class StreamPath extends AbstractAbsolutePath
 {
     public static function parse(string $path, bool $strict = false): self
@@ -14,7 +17,7 @@ final readonly class StreamPath extends AbstractAbsolutePath
     protected function parsePath(string $path, bool $strict): void
     {
         if (!preg_match('@^[-.+a-zA-Z0-9]+://@', $path, $matches)) {
-            throw new \UnexpectedValueException('The path does not appear to be a PHP stream path');
+            throw new ValueError('The path does not appear to be a PHP stream path');
         }
 
         $prefix = $matches[0];
@@ -25,7 +28,7 @@ final readonly class StreamPath extends AbstractAbsolutePath
 
         if ($parsedComponents !== [] && $parsedComponents[0] === '..') {
             if ($strict) {
-                throw new \UnexpectedValueException('Path went beyond root');
+                throw new PathWentBeyondRootException('Path went beyond root');
             }
 
             do {

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Arokettu\Path;
 
+use Error;
+
 final class PathUtils
 {
     public static function resolveRelativePath(
@@ -24,7 +26,7 @@ final class PathUtils
             return $relativePath->toString();
         }
 
-        throw new \LogicException('PathInterface object must be either AbsolutePathInterface or RelativePathInterface');
+        throw new Error('PathInterface object must be either AbsolutePathInterface or RelativePathInterface');
     }
 
     public static function makeRelativePath(

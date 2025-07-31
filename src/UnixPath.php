@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Arokettu\Path;
 
+use Arokettu\Path\Exceptions\PathWentBeyondRootException;
+use ValueError;
+
 final readonly class UnixPath extends FilesystemPath
 {
     public static function parse(string $path, bool $strict = false): self
@@ -14,7 +17,7 @@ final readonly class UnixPath extends FilesystemPath
     protected function parsePath(string $path, bool $strict): void
     {
         if ($path[0] !== '/') {
-            throw new \UnexpectedValueException('Valid unix path must begin with a slash');
+            throw new ValueError('Valid unix path must begin with a slash');
         }
 
         $components = explode('/', $path);
@@ -23,7 +26,7 @@ final readonly class UnixPath extends FilesystemPath
 
         if ($parsedComponents !== [] && $parsedComponents[0] === '..') {
             if ($strict) {
-                throw new \UnexpectedValueException('Path went beyond root');
+                throw new PathWentBeyondRootException('Path went beyond root');
             }
 
             do {
