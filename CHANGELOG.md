@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.x
+
+### 3.0.0
+
+*Aug 1, 2025*
+
+* PHP 8.5 is required
+* All instances are now readonly
+
 ## 2.x
 
 ### 2.0.3
