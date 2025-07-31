@@ -44,13 +44,17 @@ Strict mode throws exception if traversal happens beyond root (no effect if the 
     $path->resolveRelative($rel); // /etc/passwd
     $path->resolveRelative($rel, strict: true); // exception
 
-``getPrefix()``
----------------
+``$prefix``
+-----------
+
+.. versionchanged:: 2.1.0 ``getPrefix()`` --> ``$prefix``
 
 Path prefix that you can't traverse beyond like root unix path, windows drive path (C:\\), and url hostname.
 
-``getComponents()``
--------------------
+``$components``
+---------------
+
+.. versionchanged:: 2.1.0 ``getComponents()`` --> ``$components``
 
 An array of path components excluding prefix.
 The last component of the path is empty string if path has trailing (back)slash
