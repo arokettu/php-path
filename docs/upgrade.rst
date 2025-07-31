@@ -6,6 +6,7 @@ Upgrade
 
 * PHP 8.5 is required
 * All instances are now readonly
+* Removed ``getComponents()`` and ``getPrefix()``
 
 1.x to 2.0
 ==========
