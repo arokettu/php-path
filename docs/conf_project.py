@@ -1,3 +1,4 @@
 project = 'Path Library'
 repo = 'php-path'
-packagist = False
+packagist = 'arokettu/path'
+npmjs = False
