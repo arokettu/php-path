@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Arokettu\Path;
 
-use Arokettu\Path\Helpers\DataTypeHelper;
-use SplDoublyLinkedList;
-
-abstract class AbstractPath implements PathInterface
+abstract readonly class AbstractPath implements PathInterface
 {
     protected string $prefix;
-    /** @var SplDoublyLinkedList<string> */
-    protected SplDoublyLinkedList $components;
+    /** @var list<string> */
+    protected array $components;
 
     abstract protected function parsePath(string $path, bool $strict): void;
 
@@ -39,17 +36,18 @@ abstract class AbstractPath implements PathInterface
         }
 
         if ($path->isRoot()) {
-            $newPath = clone $this;
-            $newPath->components = DataTypeHelper::iterableToNewListInstance($relativeComponents);
+            $newPath = clone($this, [
+                'components' => $relativeComponents,
+            ]);
 
             return $newPath;
         }
 
-        $components = clone $this->components;
+        $components = $this->components;
 
         // remove trailing slash
-        if ($components->top() === '') {
-            $components->pop();
+        if (array_last($components) === '') {
+            array_pop($components);
         }
 
         $numComponents = \count($relativeComponents);
@@ -60,24 +58,25 @@ abstract class AbstractPath implements PathInterface
 
             if (
                 $relativeComponents[$i] === '..' &&
-                !$components->isEmpty() &&
-                $components->top() !== '..' &&
-                $components->top() !== '.'
+                $components !== [] &&
+                array_last($components) !== '..' &&
+                array_last($components) !== '.'
             ) {
-                $components->pop();
+                array_pop($components);
                 continue;
             }
 
-            $components->push($relativeComponents[$i]);
+            $components[] = $relativeComponents[$i];
         }
 
-        $newPath = clone $this;
-        $newPath->components = $this->normalizeHead($components, $strict);
+        $newPath = clone($this, [
+            'components' => $this->normalizeHead($components, $strict),
+        ]);
 
         return $newPath;
     }
 
-    protected function normalize(array $components): SplDoublyLinkedList
+    protected function normalize(array $components): array
     {
         $numComponents = \count($components);
 
@@ -88,7 +87,7 @@ abstract class AbstractPath implements PathInterface
             }
         }
 
-        $componentsList = new SplDoublyLinkedList();
+        $componentsList = [];
 
         $component = null; // also stores last component ignoring $prevComponent logic
         $prevComponent = null;
@@ -102,29 +101,29 @@ abstract class AbstractPath implements PathInterface
             if (
                 $component === '..' &&
                 $prevComponent !== '..' && $prevComponent !== null && // leading ..'s
-                $componentsList->count() > 0 // beginning of the list
+                $componentsList !== [] // beginning of the list
             ) {
-                $componentsList->pop();
+                array_pop($componentsList);
                 continue;
             }
 
-            $componentsList->push($component);
+            $componentsList[] = $component;
             $prevComponent = $component;
         }
 
         // trailing slash logic
         if ($component === '') {
-            $componentsList->push('');
+            $componentsList[] = '';
         }
 
         return $componentsList;
     }
 
-    protected function normalizeHead(SplDoublyLinkedList $components, bool $strict): SplDoublyLinkedList
+    protected function normalizeHead(array $components, bool $strict): array
     {
-        while (!$components->isEmpty()) {
+        while ($components !== []) {
             if ($components[0] === '.') {
-                $components->shift();
+                array_shift($components);
                 continue;
             }
 
@@ -133,7 +132,7 @@ abstract class AbstractPath implements PathInterface
                     throw new \UnexpectedValueException('Relative path went beyond root');
                 }
 
-                $components->shift();
+                array_shift($components);
                 continue;
             }
 

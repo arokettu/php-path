@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Arokettu\Path;
 
-use SplDoublyLinkedList;
-
-final class RelativePath extends AbstractPath implements RelativePathInterface
+final readonly class RelativePath extends AbstractPath implements RelativePathInterface
 {
     private bool $windows;
 
@@ -70,7 +68,7 @@ final class RelativePath extends AbstractPath implements RelativePathInterface
         // absolute-ish relative path
         $isRoot = \strlen($path) > 0 && ($path[0] === '/' || $this->windows && $path[0] === '\\');
         if (!$isRoot) {
-            $parsedComponents->unshift('.');
+            array_unshift($parsedComponents, '.');
         }
 
         $this->prefix = '';
@@ -79,7 +77,7 @@ final class RelativePath extends AbstractPath implements RelativePathInterface
 
     public function isRoot(): bool
     {
-        return $this->components->count() === 0 || $this->components[0] !== '.' && $this->components[0] !== '..';
+        return $this->components === [] || $this->components[0] !== '.' && $this->components[0] !== '..';
     }
 
     public function toString(): string
@@ -87,12 +85,11 @@ final class RelativePath extends AbstractPath implements RelativePathInterface
         $directorySeparator = $this->windows ? '\\' : '/';
         $components = $this->components;
 
-        if ($components->count() > 1 && $components[0] === '.' && $components[1] !== '') {
-            $components = clone $components;
-            $components->shift();
+        if (\count($components) > 1 && $components[0] === '.' && $components[1] !== '') {
+            array_shift($components);
         }
 
-        $path = \iter\join($directorySeparator, $components);
+        $path = implode($directorySeparator, $components);
 
         if ($this->isRoot()) {
             $path = $directorySeparator . $path;
@@ -101,22 +98,22 @@ final class RelativePath extends AbstractPath implements RelativePathInterface
         return $path;
     }
 
-    protected function normalizeHead(SplDoublyLinkedList $components, bool $strict): SplDoublyLinkedList
+    protected function normalizeHead(array $components, bool $strict): array
     {
         if ($this->isRoot()) {
             return parent::normalizeHead($components, $strict);
         }
 
-        while (!$components->isEmpty()) {
+        while ($components !== []) {
             if ($components[0] === '.') {
-                $components->shift();
+                array_shift($components);
                 continue;
             }
 
             break;
         }
 
-        $components->unshift('.');
+        array_unshift($components, '.');
 
         return $components;
     }
