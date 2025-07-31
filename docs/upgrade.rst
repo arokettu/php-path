@@ -1,6 +1,12 @@
 Upgrade
 #######
 
+2.x to 3.0
+==========
+
+* PHP 8.5 is required
+* All instances are now readonly
+
 1.x to 2.0
 ==========
 
