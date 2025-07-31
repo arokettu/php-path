@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Arokettu\Path;
 
-final class UrlPath extends AbstractAbsolutePath
+final readonly class UrlPath extends AbstractAbsolutePath
 {
     public static function parse(string $path, bool $strict = false): self
     {
@@ -41,13 +41,13 @@ final class UrlPath extends AbstractAbsolutePath
 
         $parsedComponents = $this->normalize($components);
 
-        if ($parsedComponents->count() > 0 && $parsedComponents[0] === '..') {
+        if ($parsedComponents !== [] && $parsedComponents[0] === '..') {
             if ($strict) {
                 throw new \UnexpectedValueException('Path went beyond root');
             }
 
             do {
-                $parsedComponents->shift();
+                array_shift($parsedComponents);
             } while ($parsedComponents[0] === '..');
         }
 

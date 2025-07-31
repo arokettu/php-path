@@ -9,6 +9,13 @@ use Arokettu\Path\RelativePathInterface;
 
 final class NotARelativeNotAnAbsolute implements PathInterface
 {
+    public string $prefix {
+        get => throw new \LogicException();
+    }
+    public array $components {
+        get => throw new \LogicException();
+    }
+
     public function __toString(): string
     {
         throw new \LogicException();
@@ -20,16 +27,6 @@ final class NotARelativeNotAnAbsolute implements PathInterface
     }
 
     public function isRelative(): bool
-    {
-        throw new \LogicException();
-    }
-
-    public function getPrefix(): string
-    {
-        throw new \LogicException();
-    }
-
-    public function getComponents(): array
     {
         throw new \LogicException();
     }

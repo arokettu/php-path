@@ -9,8 +9,11 @@ use Arokettu\Path\RelativePathInterface;
 
 final class CustomRelativePathImplementation implements RelativePathInterface
 {
-    private array $components;
-    private bool $isRoot;
+    public string $prefix {
+        get => '';
+    }
+    public readonly array $components;
+    public readonly bool $isRoot;
 
     public function __construct(array $components, bool $isRoot)
     {
@@ -31,16 +34,6 @@ final class CustomRelativePathImplementation implements RelativePathInterface
     public function __toString(): string
     {
         return '';
-    }
-
-    public function getPrefix(): string
-    {
-        return '';
-    }
-
-    public function getComponents(): array
-    {
-        return $this->components;
     }
 
     public function toString(): string

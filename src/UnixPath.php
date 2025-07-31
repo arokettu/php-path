@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Arokettu\Path;
 
-final class UnixPath extends FilesystemPath
+final readonly class UnixPath extends FilesystemPath
 {
     public static function parse(string $path, bool $strict = false): self
     {
@@ -21,13 +21,13 @@ final class UnixPath extends FilesystemPath
 
         $parsedComponents = $this->normalize($components);
 
-        if ($parsedComponents->count() > 0 && $parsedComponents[0] === '..') {
+        if ($parsedComponents !== [] && $parsedComponents[0] === '..') {
             if ($strict) {
                 throw new \UnexpectedValueException('Path went beyond root');
             }
 
             do {
-                $parsedComponents->shift();
+                array_shift($parsedComponents);
             } while ($parsedComponents[0] === '..');
         }
 

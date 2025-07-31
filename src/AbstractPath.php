@@ -6,9 +6,9 @@ namespace Arokettu\Path;
 
 abstract readonly class AbstractPath implements PathInterface
 {
-    protected string $prefix;
+    public string $prefix;
     /** @var list<string> */
-    protected array $components;
+    public array $components;
 
     abstract protected function parsePath(string $path, bool $strict): void;
 
@@ -27,7 +27,7 @@ abstract readonly class AbstractPath implements PathInterface
             $relativeComponents = $path->components;
         } else {
             // allow external implementations
-            $relativeComponents = $path->getComponents();
+            $relativeComponents = $path->components;
             if (!array_is_list($relativeComponents)) {
                 throw new \InvalidArgumentException(
                     'Poor RelativePathInterface implementation: getComponents() must return a list',
@@ -144,22 +144,12 @@ abstract readonly class AbstractPath implements PathInterface
 
     public function toString(): string
     {
-        return $this->prefix . \iter\join('/', $this->components);
+        return $this->prefix . implode('/', $this->components);
     }
 
     public function __toString(): string
     {
         return $this->toString();
-    }
-
-    public function getPrefix(): string
-    {
-        return $this->prefix;
-    }
-
-    public function getComponents(): array
-    {
-        return iterator_to_array($this->components, false);
     }
 
     public function __debugInfo(): array

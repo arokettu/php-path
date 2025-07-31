@@ -6,7 +6,7 @@ namespace Arokettu\Path;
 
 final readonly class RelativePath extends AbstractPath implements RelativePathInterface
 {
-    private bool $windows;
+    public bool $windows;
 
     public function __construct(string $path, bool $windows = false)
     {

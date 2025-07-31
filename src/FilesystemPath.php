@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Arokettu\Path;
 
-abstract class FilesystemPath extends AbstractAbsolutePath
+abstract readonly class FilesystemPath extends AbstractAbsolutePath
 {
     /**
      * @codeCoverageIgnore OS specific

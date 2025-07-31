@@ -6,11 +6,13 @@ namespace Arokettu\Path;
 
 interface PathInterface extends \Stringable
 {
+    public string $prefix { get; }
+    /** @var list<string> */
+    public array $components { get; }
+
     public function isAbsolute(): bool;
     public function isRelative(): bool;
 
-    public function getPrefix(): string;
-    public function getComponents(): array;
     public function toString(): string;
 
     /**

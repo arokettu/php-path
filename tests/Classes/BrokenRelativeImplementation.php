@@ -9,6 +9,17 @@ use Arokettu\Path\RelativePathInterface;
 
 final class BrokenRelativeImplementation implements RelativePathInterface
 {
+    public string $prefix {
+        get => '';
+    }
+    public array $components {
+        get => [
+            0 => '123',
+            2 => '234',
+            3 => '345',
+        ];
+    }
+
     public function __toString(): string
     {
         return '';
@@ -22,20 +33,6 @@ final class BrokenRelativeImplementation implements RelativePathInterface
     public function isRelative(): bool
     {
         return true;
-    }
-
-    public function getPrefix(): string
-    {
-        return '';
-    }
-
-    public function getComponents(): array
-    {
-        return [
-            0 => '123',
-            2 => '234',
-            3 => '345',
-        ];
     }
 
     public function toString(): string

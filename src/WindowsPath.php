@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Arokettu\Path;
 
-use Arokettu\Path\Helpers\DataTypeHelper;
-use SplDoublyLinkedList;
-
-final class WindowsPath extends FilesystemPath
+final readonly class WindowsPath extends FilesystemPath
 {
     public static function parse(string $path, bool $strict = false): self
     {
@@ -56,13 +53,13 @@ final class WindowsPath extends FilesystemPath
 
         $parsedComponents = $this->normalize($components);
 
-        if ($parsedComponents->count() > 0 && $parsedComponents[0] === '..') {
+        if ($parsedComponents !== [] && $parsedComponents[0] === '..') {
             if ($strict) {
                 throw new \UnexpectedValueException('Path went beyond root');
             }
 
             do {
-                $parsedComponents->shift();
+                array_shift($parsedComponents);
             } while ($parsedComponents[0] === '..');
         }
 
@@ -87,18 +84,18 @@ final class WindowsPath extends FilesystemPath
         }
 
         $this->prefix = $prefix;
-        $this->components = DataTypeHelper::iterableToNewListInstance($components);
+        $this->components = $components;
     }
 
     public function toString(): string
     {
-        return $this->prefix . \iter\join('\\', $this->components);
+        return $this->prefix . implode('\\', $this->components);
     }
 
-    protected function buildRelative(SplDoublyLinkedList $components): RelativePathInterface
+    protected function buildRelative(array $components): RelativePathInterface
     {
         $path = new RelativePath('.', true);
-        $path->components = $components;
+        $path = clone($path, ['components' => $components]);
 
         return $path;
     }

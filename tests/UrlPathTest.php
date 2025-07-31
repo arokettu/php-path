@@ -15,54 +15,54 @@ final class UrlPathTest extends TestCase
     {
         $path = UrlPath::parse('https://example.com/i////./am/test/./skipme/../url');
         self::assertEquals('https://example.com/i/am/test/url', $path->toString());
-        self::assertEquals('https://example.com/', $path->getPrefix());
-        self::assertEquals(['i', 'am', 'test', 'url'], $path->getComponents());
+        self::assertEquals('https://example.com/', $path->prefix);
+        self::assertEquals(['i', 'am', 'test', 'url'], $path->components);
 
         $path = UrlPath::parse('https://example.com/../../i/am/test/url');
         self::assertEquals('https://example.com/i/am/test/url', $path->toString());
-        self::assertEquals('https://example.com/', $path->getPrefix());
-        self::assertEquals(['i', 'am', 'test', 'url'], $path->getComponents());
+        self::assertEquals('https://example.com/', $path->prefix);
+        self::assertEquals(['i', 'am', 'test', 'url'], $path->components);
 
         $path = UrlPath::parse('https://user:pass@example.com/i/am/test/url');
         self::assertEquals('https://user:pass@example.com/i/am/test/url', $path->toString());
-        self::assertEquals('https://user:pass@example.com/', $path->getPrefix());
-        self::assertEquals(['i', 'am', 'test', 'url'], $path->getComponents());
+        self::assertEquals('https://user:pass@example.com/', $path->prefix);
+        self::assertEquals(['i', 'am', 'test', 'url'], $path->components);
 
         // trailing slash
         $path = UrlPath::parse('https://example.com/i/./am/test/./skipme/../url/');
         self::assertEquals('https://example.com/i/am/test/url/', $path->toString());
-        self::assertEquals('https://example.com/', $path->getPrefix());
-        self::assertEquals(['i', 'am', 'test', 'url', ''], $path->getComponents());
+        self::assertEquals('https://example.com/', $path->prefix);
+        self::assertEquals(['i', 'am', 'test', 'url', ''], $path->components);
 
         // no trailing slash after host: normalize to slash
         $path = UrlPath::parse('https://example.com');
         self::assertEquals('https://example.com/', $path->toString());
-        self::assertEquals('https://example.com/', $path->getPrefix());
-        self::assertEquals([], $path->getComponents());
+        self::assertEquals('https://example.com/', $path->prefix);
+        self::assertEquals([], $path->components);
 
         // trailing slash after host
         $path = UrlPath::parse('https://example.com/');
         self::assertEquals('https://example.com/', $path->toString());
-        self::assertEquals('https://example.com/', $path->getPrefix());
-        self::assertEquals([], $path->getComponents());
+        self::assertEquals('https://example.com/', $path->prefix);
+        self::assertEquals([], $path->components);
     }
 
     public function testCreateStrict(): void
     {
         $path = UrlPath::parse('https://example.com/i/./am/test/./skipme/../url', true);
         self::assertEquals('https://example.com/i/am/test/url', $path->toString());
-        self::assertEquals('https://example.com/', $path->getPrefix());
-        self::assertEquals(['i', 'am', 'test', 'url'], $path->getComponents());
+        self::assertEquals('https://example.com/', $path->prefix);
+        self::assertEquals(['i', 'am', 'test', 'url'], $path->components);
 
         $path = UrlPath::parse('https://example.com/i/./am/test/./skipme/../url/', true);
         self::assertEquals('https://example.com/i/am/test/url/', $path->toString());
-        self::assertEquals('https://example.com/', $path->getPrefix());
-        self::assertEquals(['i', 'am', 'test', 'url', ''], $path->getComponents());
+        self::assertEquals('https://example.com/', $path->prefix);
+        self::assertEquals(['i', 'am', 'test', 'url', ''], $path->components);
 
         $path = UrlPath::parse('https://user:pass@example.com/i/am/test/url', true);
         self::assertEquals('https://user:pass@example.com/i/am/test/url', $path->toString());
-        self::assertEquals('https://user:pass@example.com/', $path->getPrefix());
-        self::assertEquals(['i', 'am', 'test', 'url'], $path->getComponents());
+        self::assertEquals('https://user:pass@example.com/', $path->prefix);
+        self::assertEquals(['i', 'am', 'test', 'url'], $path->components);
     }
 
     public function testCreateInvalid(): void
@@ -72,8 +72,8 @@ final class UrlPathTest extends TestCase
 
         $path = UrlPath::parse('https://example.com/../../i/am/test/url', true);
         self::assertEquals('https://example.com/i/am/test/url', $path->toString());
-        self::assertEquals('https://example.com/', $path->getPrefix());
-        self::assertEquals(['i', 'am', 'test', 'url'], $path->getComponents());
+        self::assertEquals('https://example.com/', $path->prefix);
+        self::assertEquals(['i', 'am', 'test', 'url'], $path->components);
     }
 
     public function testResolveRelative(): void
