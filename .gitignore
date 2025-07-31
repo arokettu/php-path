@@ -11,3 +11,6 @@
 
 # docs
 /docs/build
+
+# misc
+/debug

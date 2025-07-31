@@ -7,6 +7,10 @@ namespace Arokettu\Path;
 use Arokettu\Path\Helpers\DataTypeHelper;
 use SplDoublyLinkedList;
 
+/**
+ * @property-read string $prefix
+ * @property-read array $components
+ */
 abstract class AbstractPath implements PathInterface
 {
     protected string $prefix;
@@ -178,5 +182,13 @@ abstract class AbstractPath implements PathInterface
     public function __unserialize(array $data): void
     {
         [$this->prefix, $this->components] = $data;
+    }
+
+    public function __get(string $name): mixed
+    {
+        return match(strtolower($name)) {
+            'prefix' => $this->getPrefix(),
+            'components' => $this->getComponents(),
+        };
     }
 }
