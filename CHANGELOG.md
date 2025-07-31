@@ -2,6 +2,12 @@
 
 ## 3.x
 
+### 3.0.1
+
+*Aug 1, 2025*
+
+* Replaced exceptions with errors
+
 ### 3.0.0
 
 *Aug 1, 2025*
