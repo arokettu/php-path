@@ -48,6 +48,6 @@ coverage:
     - master
   image: php:8.5-rc
   script:
-    - composer update
+    - composer update --ignore-platform-req=php
     - XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover coverage.xml
     - bash <(curl -s https://codecov.io/bash)
