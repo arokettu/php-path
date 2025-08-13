@@ -13,7 +13,7 @@ cache:
     # install system packages
     - apt-get update && apt-get install -y git unzip
     # install extensions
-    - if [ "$INSTALL_XDEBUG" -eq 1 ]; then curl --location https://github.com/FriendsOfPHP/pickle/releases/latest/download/pickle.phar --output pickle.phar; php pickle.phar install --defaults xdebug; docker-php-ext-enable xdebug; fi
+    - if [ "$COVERAGE" -eq 1 ]; then pecl install pcov; docker-php-ext-enable pcov; fi
     # install composer
     - php -r "copy('https://composer.github.io/installer.sig', '/tmp/composer.sig');"
     - php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');"
@@ -39,15 +39,15 @@ test:
 #          - '8' # latest 8
 
 # coverage
-#coverage:
-#  variables:
-#    INSTALL_XDEBUG: 1
-#  extends: .test
-#  stage: report
-#  only:
-#    - master
-#  image: php:8.5
-#  script:
-#    - composer update
-#    - XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover coverage.xml
-#    - bash <(curl -s https://codecov.io/bash)
+coverage:
+  variables:
+    COVERAGE: 1
+  extends: .test
+  stage: report
+  only:
+    - master
+  image: php:8.5-rc
+  script:
+    - composer update
+    - XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover coverage.xml
+    - bash <(curl -s https://codecov.io/bash)
