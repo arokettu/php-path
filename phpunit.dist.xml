@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         displayDetailsOnTestsThatTriggerErrors="true"
-         displayDetailsOnTestsThatTriggerNotices="true"
-         displayDetailsOnTestsThatTriggerWarnings="true"
-         displayDetailsOnTestsThatTriggerDeprecations="true"
-         displayDetailsOnPhpunitDeprecations="true"
+         displayDetailsOnAllIssues="true"
+         failOnAllIssues="true"
          executionOrder="random"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.2/phpunit.xsd">
     <testsuites>

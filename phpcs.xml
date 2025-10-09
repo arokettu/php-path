@@ -1,8 +1,5 @@
 <?xml version="1.0"?>
-<!--
-    @see https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-Ruleset
--->
-<ruleset name="Custom Standard" namespace="MyProject\CS\Standard">
+<ruleset>
     <rule ref="SandFox_PHP85"/>
     <file>src</file>
     <file>tests</file>
